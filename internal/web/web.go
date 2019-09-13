@@ -2,7 +2,6 @@ package web
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 )
 
@@ -41,8 +40,7 @@ func handleRequest(resp http.ResponseWriter, req *http.Request) {
 	http.ServeFile(resp, req, webpath+path)
 }
 
-// Serve lauches the http server and serves the website content
-func Serve() error {
-	log.Println("Launching server on port :8080")
-	return http.ListenAndServe(":8080", http.HandlerFunc(handleRequest))
+// Setup configures the web server to serve the static html and assets files
+func Setup() {
+	http.HandleFunc("/", handleRequest)
 }
