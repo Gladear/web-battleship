@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Homepage</title>
+    <style>
+      li {
+        list-style: none;
+        margin-bottom: 0.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Homepage</h1>
+    <code>
+      <pre><ul id="debug"></ul></pre>
+    </code>
+
+    <script type="module">
+      const debug = document.getElementById('debug');
+      const ws = new WebSocket(`ws://${location.host}/endpoint`);
+      const dtf = new Intl.DateTimeFormat(undefined, {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      });
+
+      function log(...messages) {
+        const [main, ...sub] = messages;
+
+        debug.insertAdjacentHTML(
+          'beforeend',
+          `<li>${dtf.format(new Date())} ${main}${
+            sub.length == 0 ? '' : `<ul>${sub.map(msg => `<li>${msg}</li>`)}</ul>`
+          }</li>`,
+        );
+      }
+
+      ws.addEventListener('open', () => {
+        log(`connected to ${ws.url}`);
+        ws.send(JSON.stringify({ action: 'hello', payload: 'world' }));
+      });
+
+      ws.addEventListener('message', event => {
+        const { data } = event;
+        const message = JSON.parse(data);
+        log('received message: ', JSON.stringify(message, undefined, 4));
+      });
+
+      ws.addEventListener('close', () => log('connection closed'));
+
+      window.addEventListener('close', () => {
+        ws.close(1000, 'quitting');
+      });
+    </script>
+  </body>
+</html>
