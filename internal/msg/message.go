@@ -1,17 +1,17 @@
 package msg
 
+// Action is an action to be done by the client or the server
+type Action string
+
 // A Message is an action made by the player,
 // associated with a payload that type depends on the action
 type Message struct {
-	// Action is the action to be done
-	Action string
-
-	// Payload is the data associated with the action
-	Payload interface{}
+	Action  Action      `json:"action"`
+	Payload interface{} `json:"payload"`
 }
 
 // New creates a message
-func New(action string, payload interface{}) Message {
+func New(action Action, payload interface{}) Message {
 	return Message{action, payload}
 }
 

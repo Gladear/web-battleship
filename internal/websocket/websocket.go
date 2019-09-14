@@ -18,7 +18,9 @@ func handleConnection(resp http.ResponseWriter, req *http.Request) {
 		panic(err)
 	}
 
-	log.Panicln(controller.HandlePlayer(&remotePlayer{conn}))
+	if err = controller.HandlePlayer(&remotePlayer{conn}); err != nil {
+		log.Panicln(err)
+	}
 }
 
 // Setup configure the websocket endpoint to handle connection requests from the game

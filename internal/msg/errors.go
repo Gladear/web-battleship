@@ -3,5 +3,5 @@ package msg
 // Errors
 const (
 	UnexistingBattle = "unexisting battle"
-	AlreadyConnected = "already_connected"
+	IncorrectState   = "incorrect_state"
 )

@@ -43,25 +43,27 @@ func HandlePlayer(player Player) error {
 
 		if err != nil {
 			player.Disconnect(err)
+			return err
 		}
 
 		action := message.Action
 
-		switch action {
-		case msg.Disconnect:
+		if action == msg.Disconnect {
 			break
+		}
+
+		if msg.RequireConnected(action) == (battle == nil) {
+			player.Send(msg.NewError(msg.IncorrectState))
+			continue
+		}
+
+		switch action {
 		case msg.Create:
-			if battle != nil {
-				player.Send(msg.NewError(msg.AlreadyConnected))
-			} else {
-				battle = handleCreate(&player)
-			}
+			battle = handleCreate(&player)
 		case msg.Join:
-			if battle != nil {
-				player.Send(msg.NewError(msg.AlreadyConnected))
-			} else {
-				battle = handleJoin(&player, message.Payload.(string))
-			}
+			battle = handleJoin(&player, message.Payload.(string))
 		}
 	}
+
+	return nil
 }
