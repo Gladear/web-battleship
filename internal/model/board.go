@@ -1,11 +1,6 @@
 package model
 
-type parameters struct {
-	Width, Height int
-	NbShips       int
-}
-
-type board struct {
-	Ships      []*ship
-	Parameters parameters
+// The Board represents the grid of the game
+type Board struct {
+	Ships []Ship
 }

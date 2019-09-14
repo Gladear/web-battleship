@@ -11,7 +11,7 @@ var (
 )
 
 func handleCreate(player *Player) *model.Battle {
-	battle := &model.Battle{}
+	battle := model.NewBattle()
 	hash := generateHash()
 
 	hashes[hash] = battle

@@ -1,26 +1,32 @@
 package model
 
-type orientation int
+// The Orientation represents whether the ship
+// is placed horizontally or vertically
+type Orientation int
 
+// The orientation of a ship
 const (
-	// Horizontal tells that the ship is positionned horizontally
-	horizontal orientation = iota
-	// Vertical tells that the ship is positionned vertically
-	vertical
+	Horizontal Orientation = iota
+	Vertical
 )
 
-type position struct {
+// A Position is the location of the ship on the board,
+// as well as its orientation
+type Position struct {
 	X           int
 	Y           rune
-	Orientation orientation
+	Orientation Orientation
 }
 
-type shipType struct {
+// ShipType is the model of the ship
+// It contains its length and its name
+type ShipType struct {
 	Name   string
 	Length int
 }
 
-type ship struct {
-	Type     *shipType
-	Position position
+// A Ship represents a ship on the board
+type Ship struct {
+	Type     *ShipType
+	Position Position
 }
