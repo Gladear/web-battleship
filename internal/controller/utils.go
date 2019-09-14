@@ -11,7 +11,7 @@ func generateHash() string {
 	for {
 		hash = fmt.Sprintf("%v", rand.Uint64())
 
-		if _, exist := hashes[hash]; !exist {
+		if _, exist := games[hash]; !exist {
 			break
 		}
 	}

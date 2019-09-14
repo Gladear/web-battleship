@@ -1,42 +1,39 @@
 package controller
 
-import (
-	"battleship/internal/model"
-	"battleship/internal/msg"
-)
+import "battleship/internal/msg"
 
-var (
-	hashes  = make(map[string]*model.Battle)
-	players = make(map[*model.Battle][]*Player)
-)
+var games = make(map[string]Game)
 
-func handleCreate(player *Player) *model.Battle {
-	battle := model.NewBattle()
+func handleCreate(player Player) *Game {
+	game := newGame()
+	game.addPlayer(player)
+
 	hash := generateHash()
 
-	hashes[hash] = battle
+	games[hash] = game
 
-	(*player).Send(msg.New(msg.Ack, hash))
+	player.Send(msg.New(msg.Ack, hash))
 
-	return battle
+	return &game
 }
 
-func handleJoin(player *Player, hash string) *model.Battle {
-	battle := hashes[hash]
+func handleJoin(player Player, hash string) *Game {
+	game, exists := games[hash]
 
-	if battle == nil {
-		(*player).Send(msg.NewError(msg.UnexistingBattle))
-	} else {
-		(*player).Send(msg.New(msg.Ack, nil))
-		players[battle] = append(players[battle], player)
+	if !exists {
+		player.Send(msg.NewError(msg.UnexistingBattle))
+		return nil
 	}
 
-	return battle
+	player.Send(msg.New(msg.Ack, nil))
+	game.addPlayer(player)
+
+	return &game
 }
 
 // HandlePlayer adds a player to the game
 func HandlePlayer(player Player) error {
-	var battle *model.Battle
+	var game *Game
 
 	for {
 		message, err := player.GetNextAction()
@@ -52,16 +49,22 @@ func HandlePlayer(player Player) error {
 			break
 		}
 
-		if msg.RequireConnected(action) == (battle == nil) {
+		if msg.RequireConnected(action) == (game == nil) {
 			player.Send(msg.NewError(msg.IncorrectState))
 			continue
 		}
 
 		switch action {
 		case msg.Create:
-			battle = handleCreate(&player)
+			game = handleCreate(player)
 		case msg.Join:
-			battle = handleJoin(&player, message.Payload.(string))
+			game = handleJoin(player, message.Payload.(string))
+		case msg.Ready:
+			err = game.handleReady(player, message.Payload.(readyPayload))
+		}
+
+		if err != nil {
+			panic(err)
 		}
 	}
 

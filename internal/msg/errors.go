@@ -4,4 +4,6 @@ package msg
 const (
 	UnexistingBattle = "unexisting battle"
 	IncorrectState   = "incorrect_state"
+
+	WrongPlacement = "bad_placement"
 )
