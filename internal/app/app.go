@@ -1,6 +1,7 @@
 package app
 
 import (
+	"battleship/internal/endpoint"
 	"battleship/internal/web"
 	"log"
 	"net/http"
@@ -8,6 +9,9 @@ import (
 
 // Run instantiate the server and handles connections
 func Run() {
+	// Setup WS endpoint
+	endpoint.Setup()
+
 	// Setup web server
 	web.Setup()
 
