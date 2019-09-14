@@ -1,9 +1,20 @@
 package main
 
 import (
-	"battleship/internal/app"
+	"battleship/internal/web"
+	"battleship/internal/websocket"
+	"log"
+	"net/http"
 )
 
 func main() {
-	app.Run()
+	// Setup WS endpoint
+	websocket.Setup()
+
+	// Setup web server
+	web.Setup()
+
+	// Launch server
+	log.Println("Launching server on port :8080")
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

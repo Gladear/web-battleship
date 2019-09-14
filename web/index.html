@@ -19,37 +19,22 @@
     </code>
 
     <script type="module">
-      const debug = document.getElementById('debug');
+      import { log } from './debug.js';
+
       const ws = new WebSocket(`ws://${location.host}/endpoint`);
-      const dtf = new Intl.DateTimeFormat(undefined, {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      });
 
-      function log(...messages) {
-        const [main, ...sub] = messages;
-
-        debug.insertAdjacentHTML(
-          'beforeend',
-          `<li>${dtf.format(new Date())} ${main}${
-            sub.length == 0 ? '' : `<ul>${sub.map(msg => `<li>${msg}</li>`)}</ul>`
-          }</li>`,
-        );
-      }
-
-      ws.addEventListener('open', () => {
+      ws.onopen = () => {
         log(`connected to ${ws.url}`);
-        ws.send(JSON.stringify({ action: 'hello', payload: 'world' }));
-      });
+        ws.send(JSON.stringify({ action: 'create' }));
+      };
 
-      ws.addEventListener('message', event => {
+      ws.onmessage = event => {
         const { data } = event;
         const message = JSON.parse(data);
         log('received message: ', JSON.stringify(message, undefined, 4));
-      });
+      };
 
-      ws.addEventListener('close', () => log('connection closed'));
+      ws.onclose = () => log('connection closed');
 
       window.addEventListener('close', () => {
         ws.close(1000, 'quitting');
