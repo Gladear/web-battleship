@@ -8,7 +8,8 @@ type Parameters struct {
 
 func (params *Parameters) validateShips(ships []Ship) bool {
 	return params.checkShipTypes(ships) &&
-		params.fitShips(ships)
+		params.fitShips(ships) &&
+		params.checkShipsOverlaps(ships)
 }
 
 func (params *Parameters) checkShipTypes(ships []Ship) bool {
@@ -51,12 +52,45 @@ func (params *Parameters) fitShips(ships []Ship) bool {
 			maxX += ship.Type.Length
 		case Vertical:
 			maxY += ship.Type.Length
-		default:
-			panic("unknown orientation")
 		}
 
 		if maxX > width || maxY > height {
 			return false
+		}
+	}
+
+	return true
+}
+
+func getNextPos(x, y int, orientation Orientation) (int, int) {
+	if orientation == Horizontal {
+		return x + 1, y
+	}
+
+	return x, y + 1
+}
+
+func (params *Parameters) checkShipsOverlaps(ships []Ship) bool {
+	grid := make([][]bool, params.Width)
+
+	for i := 0; i < params.Width; i++ {
+		grid[i] = make([]bool, params.Height)
+	}
+
+	for _, ship := range ships {
+		pos := ship.Position
+		length := ship.Type.Length
+
+		x, y := pos.X, pos.Y
+
+		for i := 0; i < length; i++ {
+			x, y = getNextPos(x, y, pos.Orientation)
+
+			if grid[x][y] {
+				return false
+			}
+
+			grid[x][y] = true
 		}
 	}
 
