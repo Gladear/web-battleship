@@ -1,7 +1,7 @@
 package websocket
 
 import (
-	"battleship/internal/msg"
+	"web-battleship/internal/msg"
 	"encoding/json"
 
 	"github.com/gorilla/websocket"

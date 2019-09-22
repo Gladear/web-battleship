@@ -1,7 +1,7 @@
 package websocket
 
 import (
-	"battleship/internal/controller"
+	"web-battleship/internal/controller"
 	"log"
 	"net/http"
 

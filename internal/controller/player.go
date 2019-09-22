@@ -1,6 +1,6 @@
 package controller
 
-import "battleship/internal/msg"
+import "web-battleship/internal/msg"
 
 // A Player is an entity that plays the game
 // It can send and is sent messages

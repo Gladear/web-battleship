@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"battleship/internal/model"
+	"web-battleship/internal/model"
 	"fmt"
 )
 

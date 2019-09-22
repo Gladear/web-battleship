@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"battleship/internal/msg"
 	"encoding/json"
+	"web-battleship/internal/msg"
 )
 
 var games = make(map[string]Game)

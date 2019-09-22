@@ -1,8 +1,8 @@
 package main
 
 import (
-	"battleship/internal/web"
-	"battleship/internal/websocket"
+	"web-battleship/internal/web"
+	"web-battleship/internal/websocket"
 	"log"
 	"net/http"
 )
