@@ -1,6 +1,9 @@
 package controller
 
-import "battleship/internal/msg"
+import (
+	"battleship/internal/msg"
+	"encoding/json"
+)
 
 var games = make(map[string]Game)
 
@@ -17,7 +20,13 @@ func handleCreate(player Player) *Game {
 	return &game
 }
 
-func handleJoin(player Player, hash string) *Game {
+func handleJoin(player Player, payload json.RawMessage) *Game {
+	var hash string
+
+	if err := json.Unmarshal(payload, &hash); err != nil {
+		panic(err)
+	}
+
 	game, exists := games[hash]
 
 	if !exists {
@@ -58,9 +67,9 @@ func HandlePlayer(player Player) error {
 		case msg.Create:
 			game = handleCreate(player)
 		case msg.Join:
-			game = handleJoin(player, message.Payload.(string))
+			game = handleJoin(player, message.Payload)
 		case msg.Ready:
-			err = game.handleReady(player, message.Payload.(readyPayload))
+			err = game.handleReady(player, message.Payload)
 		}
 
 		if err != nil {
