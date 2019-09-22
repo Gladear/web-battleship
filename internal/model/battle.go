@@ -5,10 +5,10 @@ type Player interface{}
 
 // Battle represents a game of battleship
 type Battle struct {
-	players    []Player
-	boards     map[Player]Board
-	turn       Player
-	parameters Parameters
+	players []Player
+	boards  map[Player]Board
+	turn    Player
+	params  Parameters
 }
 
 // AddPlayer adds a player to the battle
@@ -23,6 +23,10 @@ func (battle *Battle) AddPlayer(player Player) {
 
 // AddShips adds the ships to the board for the indicated player
 func (battle *Battle) AddShips(player Player, ships []Ship) bool {
+	if !battle.params.validateShips(ships) {
+		return false
+	}
+
 	board := battle.boards[player]
 	board.Ships = ships
 	return true
@@ -31,9 +35,9 @@ func (battle *Battle) AddShips(player Player, ships []Ship) bool {
 // NewBattle instantiate a new game
 func NewBattle() Battle {
 	return Battle{
-		players:    make([]Player, 0, 2),
-		boards:     make(map[Player]Board),
-		turn:       0,
-		parameters: generateParameters(),
+		players: make([]Player, 0, 2),
+		boards:  make(map[Player]Board),
+		turn:    0,
+		params:  generateParameters(),
 	}
 }
