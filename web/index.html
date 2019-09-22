@@ -30,41 +30,41 @@
           position: {
             x: 'b',
             y: 2,
-            orientation: 'H'
+            orientation: 'H',
           },
-          type: 'Carrier'
+          type: 'Carrier',
         },
         {
           position: {
             x: 'a',
             y: 3,
-            orientation: 'V'
+            orientation: 'V',
           },
-          type: 'Battleship'
+          type: 'Battleship',
         },
         {
           position: {
             x: 'c',
             y: 3,
-            orientation: 'H'
+            orientation: 'H',
           },
-          type: 'Cruiser'
+          type: 'Cruiser',
         },
         {
           position: {
             x: 'd',
             y: 4,
-            orientation: 'H'
+            orientation: 'H',
           },
-          type: 'Submarine'
+          type: 'Submarine',
         },
         {
           position: {
             x: 'e',
             y: 5,
-            orientation: 'H'
+            orientation: 'H',
           },
-          type: 'Patrol Boat'
+          type: 'Patrol Boat',
         },
       ];
 
@@ -82,13 +82,15 @@
 
         switch (step) {
           // Game was created
-          case 0: // test: send wrong ready message (missing ships)
+          case 0:
+            log('test: send wrong ready message (missing ships)');
             send({
               action: 'ready',
               payload: ships.slice(1),
             });
             break;
-          case 1: // test: send wrong ready message (incorrect position)
+          case 1:
+            log('test: send wrong ready message (out of bounds position)');
             send({
               action: 'ready',
               payload: [
@@ -97,14 +99,32 @@
                   position: {
                     x: 'b',
                     y: 11,
-                    orientation: 'H'
+                    orientation: 'H',
                   },
                 },
                 ...ships.slice(1),
               ],
             });
             break;
-          case 2: // test: send correct ready message
+          case 2:
+            log('test: send wrong ready message (ship overlaps)');
+            send({
+              action: 'ready',
+              payload: [
+                {
+                  ...ships[0],
+                  position: {
+                    x: 'a',
+                    b: 4,
+                    orientation: 'H',
+                  },
+                },
+                ...ships.slice(1),
+              ],
+            });
+            break;
+          case 3:
+            log('test: send correct ready message');
             send({
               action: 'ready',
               payload: ships,
