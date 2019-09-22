@@ -2,39 +2,24 @@ package controller
 
 import (
 	"battleship/internal/model"
-	"battleship/internal/msg"
 )
 
 // Game represents a game with two players
 type Game struct {
-	players []Player
+	Players []Player
 	Battle  model.Battle
-	ready   uint8
+	Ready   uint8
 }
 
 func (game *Game) addPlayer(player Player) {
 	game.Battle.AddPlayer(player)
-	game.players = append(game.players, player)
-}
-
-type readyPayload struct {
-	Ships []model.Ship
-}
-
-func (game *Game) handleReady(player Player, payload readyPayload) error {
-	if !game.Battle.AddShips(player, payload.Ships) {
-		return player.Send(msg.NewError(msg.WrongPlacement))
-	}
-
-	game.ready++
-
-	return nil
+	game.Players = append(game.Players, player)
 }
 
 func newGame() Game {
 	return Game{
-		players: make([]Player, 0, 2),
+		Players: make([]Player, 0, 2),
 		Battle:  model.NewBattle(),
-		ready:   0,
+		Ready:   0,
 	}
 }

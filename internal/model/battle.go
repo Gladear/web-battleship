@@ -8,7 +8,7 @@ type Battle struct {
 	players []Player
 	boards  map[Player]Board
 	turn    Player
-	params  Parameters
+	Params  Parameters
 }
 
 // AddPlayer adds a player to the battle
@@ -23,7 +23,7 @@ func (battle *Battle) AddPlayer(player Player) {
 
 // AddShips adds the ships to the board for the indicated player
 func (battle *Battle) AddShips(player Player, ships []Ship) bool {
-	if !battle.params.validateShips(ships) {
+	if !battle.Params.validateShips(ships) {
 		return false
 	}
 
@@ -38,6 +38,6 @@ func NewBattle() Battle {
 		players: make([]Player, 0, 2),
 		boards:  make(map[Player]Board),
 		turn:    0,
-		params:  generateParameters(),
+		Params:  generateParameters(),
 	}
 }
