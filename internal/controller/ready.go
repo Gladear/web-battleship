@@ -31,7 +31,7 @@ func (game *Game) handleReady(player Player, _payload json.RawMessage) error {
 	ships := payload.ToModel(&game.Battle)
 
 	if !game.Battle.AddShips(player, ships) {
-		return player.Send(msg.NewError(msg.WrongPlacement))
+		return player.Send(msg.NewError(msg.BadPlacement))
 	}
 
 	player.Send(msg.New(msg.Ack, nil))
