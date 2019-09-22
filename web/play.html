@@ -19,9 +19,11 @@
     </code>
 
     <script type="module">
-      import { log } from './debug.js';
+      import { log, makeSend } from './debug.js';
 
       const ws = new WebSocket(`ws://${location.host}/endpoint`);
+      const send = makeSend(ws);
+
       const { join } = document.forms;
 
       ws.onopen = () => {
@@ -29,21 +31,14 @@
 
         join.addEventListener('submit', event => {
           event.preventDefault();
-
-          const message = JSON.stringify(
-            { action: 'join', payload: join.hash.value },
-            undefined,
-            4,
-          );
-          log('sending message', message);
-          ws.send(message);
+          send({ action: 'join', payload: join.hash.value });
         });
       };
 
       ws.onmessage = event => {
         const { data } = event;
         const message = JSON.parse(data);
-        log('received message: ', JSON.stringify(message, undefined, 4));
+        log('received message: ', message);
       };
 
       ws.onclose = () => log('connection closed');

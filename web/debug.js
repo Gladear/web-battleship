@@ -11,7 +11,24 @@ export function log(...messages) {
   debug.insertAdjacentHTML(
     'beforeend',
     `<li>${dtf.format(new Date())} ${main}${
-      sub.length == 0 ? '' : `<ul>${sub.map(msg => `<li>${msg}</li>`)}</ul>`
+      sub.length == 0
+        ? ''
+        : `<ul>${sub.map(
+            msg => `<li>${typeof msg === 'string' ? msg : JSON.stringify(msg, undefined, 4)}</li>`,
+          )}</ul>`
     }</li>`,
   );
+}
+
+export function makeSend(ws) {
+  return msg => {
+    log('sending message', msg);
+    ws.send(JSON.stringify(msg));
+  };
+}
+
+export async function sleep(millis) {
+  return new Promise(resolve => {
+    setTimeout(resolve, millis);
+  });
 }
