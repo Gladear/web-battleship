@@ -12,12 +12,12 @@ func (params *Parameters) validateShips(ships []Ship) bool {
 }
 
 func (params *Parameters) checkShipTypes(ships []Ship) bool {
-	types := make([]ShipType, len(params.Ships))
-	copy(types, params.Ships)
-
-	if len(types) != len(ships) {
+	if len(params.Ships) != len(ships) {
 		return false
 	}
+
+	types := make([]ShipType, len(params.Ships))
+	copy(types, params.Ships)
 
 	for _, ship := range ships {
 		for i, shipType := range types {
