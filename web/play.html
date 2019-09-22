@@ -1,12 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Play</title>
-</head>
-<body>
-  <h1>Play</h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Play</title>
+  </head>
+  <body>
+    <h1>Play</h1>
+    <form id="join">
+      <label>
+        Hash:
+        <input type="text" id="hash" />
+      </label>
+    </form>
+    <code>
+      <pre><ul id="debug"></ul></pre>
+    </code>
+
+    <script type="module">
+      import { log, makeSend } from './debug.js';
+
+      const ws = new WebSocket(`ws://${location.host}/endpoint`);
+      const send = makeSend(ws);
+
+      const { join } = document.forms;
+
+      ws.onopen = () => {
+        log(`connected to ${ws.url}`);
+
+        join.addEventListener('submit', event => {
+          event.preventDefault();
+          send({ action: 'join', payload: join.hash.value });
+        });
+      };
+
+      ws.onmessage = event => {
+        const { data } = event;
+        const message = JSON.parse(data);
+        log('received message: ', message);
+      };
+
+      ws.onclose = () => log('connection closed');
+
+      window.addEventListener('close', () => {
+        ws.close(1000, 'quitting');
+      });
+    </script>
+  </body>
 </html>
