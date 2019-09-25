@@ -1,13 +1,14 @@
 package controller
 
 import (
+	"encoding/json"
+	"web-battleship/internal/client"
 	"web-battleship/internal/model"
 	"web-battleship/internal/msg"
-	"encoding/json"
 )
 
 // readyPayload is the payload for the ready action
-type readyPayload []Ship
+type readyPayload []client.Ship
 
 func (payload readyPayload) ToModel(battle *model.Battle) []model.Ship {
 	ships := make([]model.Ship, 0, len(payload))
