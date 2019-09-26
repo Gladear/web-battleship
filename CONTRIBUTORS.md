@@ -1,4 +1,4 @@
 * Lucas P.
 * Felix B.
-* Loic C.
+* Loïc C.
 * Enzo B.
