@@ -56,6 +56,7 @@ function send_ready(){
 		ws.onopen = () => {
 			log('test: send correct ready message');
             send({action: 'ready', payload: ships,});
+        };
 		ws.onclose = () => log('connection closed');
 };
 

@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Homepage</title>
+    <link rel="stylesheet" href="./index.css">
+    <title>Battleship - Home</title>
     <style>
       li {
         list-style: none;
@@ -13,133 +14,12 @@
     </style>
   </head>
   <body>
-    <h1>Homepage</h1>
-    <code>
-      <pre><ul id="debug"></ul></pre>
-    </code>
+    <h1>Battleship - Home</h1>
 
-    <script type="module">
-      import { log, makeSend, sleep } from './debug.js';
-
-      const ws = new WebSocket(`ws://${location.host}/endpoint`);
-
-      const send = makeSend(ws);
-
-      const ships = [
-        {
-          position: {
-            x: 'b',
-            y: 2,
-            orientation: 'H',
-          },
-          type: 'Carrier',
-        },
-        {
-          position: {
-            x: 'a',
-            y: 3,
-            orientation: 'V',
-          },
-          type: 'Battleship',
-        },
-        {
-          position: {
-            x: 'c',
-            y: 3,
-            orientation: 'H',
-          },
-          type: 'Cruiser',
-        },
-        {
-          position: {
-            x: 'd',
-            y: 4,
-            orientation: 'H',
-          },
-          type: 'Submarine',
-        },
-        {
-          position: {
-            x: 'e',
-            y: 5,
-            orientation: 'H',
-          },
-          type: 'Patrol Boat',
-        },
-      ];
-
-      let step = 0;
-
-      ws.onopen = () => {
-        log(`connected to ${ws.url}`);
-        send({ action: 'create' });
-      };
-
-      ws.onmessage = async event => {
-        const { data } = event;
-        const message = JSON.parse(data);
-        log('received message: ', message);
-
-        switch (step) {
-          // Game was created
-          case 0:
-            log('test: send wrong ready message (missing ships)');
-            send({
-              action: 'ready',
-              payload: ships.slice(1),
-            });
-            break;
-          case 1:
-            log('test: send wrong ready message (out of bounds position)');
-            send({
-              action: 'ready',
-              payload: [
-                {
-                  ...ships[0],
-                  position: {
-                    x: 'b',
-                    y: 11,
-                    orientation: 'H',
-                  },
-                },
-                ...ships.slice(1),
-              ],
-            });
-            break;
-          case 2:
-            log('test: send wrong ready message (ship overlaps)');
-            send({
-              action: 'ready',
-              payload: [
-                {
-                  ...ships[0],
-                  position: {
-                    x: 'a',
-                    b: 4,
-                    orientation: 'H',
-                  },
-                },
-                ...ships.slice(1),
-              ],
-            });
-            break;
-          case 3:
-            log('test: send correct ready message');
-            send({
-              action: 'ready',
-              payload: ships,
-            });
-            break;
-        }
-
-        step++;
-      };
-
-      ws.onclose = () => log('connection closed');
-
-      window.addEventListener('close', () => {
-        ws.close(1000, 'quitting');
-      });
-    </script>
+      <button id="button_create">Create</button>
+      
+      <button id="button_join">Join</button>
   </body>
+    <script src="./function.js"></script>
+    <script src="./main.js"></script>
 </html>
