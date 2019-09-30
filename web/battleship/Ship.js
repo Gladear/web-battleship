@@ -350,4 +350,54 @@ class Ship {
         advCtx.stroke();
         
     }
+    
+    getPositions(){
+        
+        var lenShip;
+        var pos = [];
+        
+        switch(this.type){
+            case 0:
+                lenShip = 3;
+                break;
+            case 1:
+                lenShip = 6;
+                break;
+            case 2:
+                lenShip = 4;
+                break;
+            case 3:
+                lenShip = 2;
+                break;
+            case 4:
+                lenShip = 3;
+                break;
+        }
+        
+        if(this.rotation){
+            for(var i=0;i<lenShip;i++){
+                var p = {x: this.x, y: this.y+i};
+                pos.push(p);
+            } 
+        } else {
+            for(var i=0;i<lenShip;i++){
+                var p = {x: this.x+i, y: this.y};
+                pos.push(p);
+            } 
+        }
+        
+        return pos;
+    }
+    
+    equal(ship){
+        
+        if(this.x != ship.x) return false;
+        if(this.y != ship.y) return false;
+        if(this.type != ship.type) return false;
+        if(this.rotation != ship.rotation) return false;
+        
+        return true;
+        
+    }
+    
 }

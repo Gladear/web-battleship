@@ -170,4 +170,83 @@ class Board {
         
     }
     
+    checkPos(posPlayer,posShip){
+        
+        var noConflict = true;
+        
+        posPlayer.forEach( function(posP){
+            posShip.forEach( function(posS){
+                if(posP.x == posS.x && posP.y == posS.y) noConflict = false;
+            });
+        });
+        
+        return noConflict;
+    }
+    
+    checkConfilct(type,rotation){
+        
+        var lenShip;
+        var posShip = [];
+        var noConflict = true;
+        
+        switch(type){
+            case 0:
+                lenShip = 3;
+                break;
+            case 1:
+                lenShip = 6;
+                break;
+            case 2:
+                lenShip = 4;
+                break;
+            case 3:
+                lenShip = 2;
+                break;
+            case 4:
+                lenShip = 3;
+                break;
+        }
+        
+        if(rotation){
+            for(var i=0; i<lenShip; i++){
+                var pos = {x: this.selectedX, y: this.selectedY+i};
+                posShip.push(pos);
+            }
+        } else {
+            for(var i=0; i<lenShip; i++){
+                var pos = {x: this.selectedX+i, y: this.selectedY};
+                posShip.push(pos);
+            }
+        }
+        
+        posShip.forEach( function(p){
+            if(pos.x<1 || pos.x > gameLineNumber || pos.y<1 || pos.y>gameColNumber) noConflict = false;
+        });
+        
+        if(noConflict){
+            var posPlayer = board.players[playerNumber-1].getShipsPos();
+            noConflict = this.checkPos(posPlayer,posShip);
+        }
+        
+        return noConflict;
+    }
+    
+    deleteShip(){
+        
+        board.typeDel = -1;
+        
+        this.players[playerNumber-1].ships.forEach( function(ship){
+            ship.getPositions().forEach( function(pos){
+                
+                if(pos.x == board.selectedX && pos.y == board.selectedY){
+                    board.typeDel = ship.type;
+                    board.players[playerNumber-1].removeShip(ship);
+                }
+                
+            });  
+        });
+        
+        return this.typeDel;
+    }
+    
 }
