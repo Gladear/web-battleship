@@ -2,7 +2,10 @@ package web
 
 import (
 	"fmt"
+	"mime"
 	"net/http"
+	"path/filepath"
+	"strings"
 )
 
 const (
@@ -11,14 +14,14 @@ const (
 )
 
 func handleRequest(resp http.ResponseWriter, req *http.Request) {
-	path := req.URL.Path
+	path := strings.TrimRight(req.URL.Path, "/")
 	file, err := webdir.Open(path)
 
 	if err != nil {
 		switch {
-		case req.URL.Path == "/":
+		case path == "":
 			path = "index.html"
-		case req.URL.Path == "/rules" || req.URL.Path == "/play":
+		case path == "/rules" || path == "/play":
 			path += ".html"
 		}
 
@@ -34,7 +37,7 @@ func handleRequest(resp http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		headers := resp.Header()
 		headers.Set("Content-Length", fmt.Sprintf("%d(MISSING)", stat.Size()))
-		// headers.Set("Content-Type", mime.TypeByExtension(strings.ToLower(stat.Ext(val))))
+		headers.Set("Content-Type", mime.TypeByExtension(filepath.Ext(stat.Name())))
 	}
 
 	http.ServeFile(resp, req, webpath+path)
