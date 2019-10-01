@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="./index.css">
-    <title>Battleship - Home</title>
-    <style>
-      li {
-        list-style: none;
-        margin-bottom: 0.25rem;
-      }
-    </style>
+    <meta charset="utf-8" />
+    <title>Page d'acceuil</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
   </head>
-  <body onload="initHomePage()">
-    <h1>Battleship - Home</h1>
+  <body>
+    <h1> Bataille Navale<br /> </h1>
 
-      <button id="button_create">Create</button>
-      
-      <button id="button_join">Join</button>
+    <div id="corps_menu" align="center">
+      <a href="/play?player=1">
+        <input class="bouton_menu" type="button" value="Jouer" />
+      </a>
+      <br />
+
+      <a href="/rules" target="_blank">
+        <input class="bouton_menu" type="button" value="Règles" />
+        <br />
+      </a>
+
+      <!-- <input class="bouton_menu" type="button" value="Quitter" />
+      <br /> -->
+    </div>
   </body>
-    <script src="./controler/function.js"></script>
-    <script src="./controler/main.js"></script>
 </html>

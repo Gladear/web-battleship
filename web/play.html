@@ -1,23 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" href="/style.css">
-    <title>Battleship - Play</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Language" content="fr" />
+    <link rel="stylesheet" href="/index.css" />
+    <title>Battleship - Game</title>
   </head>
-  <body>
-    <h1>Battleship</h1>
+  <body onload="init()">
+    <div>
+      <h1>Battleship</h1>
+    </div>
 
-    <canvas id="battleship" width="847" height="847"></canvas>
+    <div id="ships">
+      <div>
+        Horizontal <input type="radio" id="o1" name="or" value="0" checked="true" />
+        <span style="color: rgba(0, 0, 0, 0)">x0</span><br />
+        Vertical <input type="radio" id="o2" name="or" value="1" />
+        <span style="color: rgba(0, 0, 0, 0)">x0</span><br />
+      </div>
+      <br />
+      <div>
+        <span id="p1">Submarine</span> <input type="radio" id="s1" name="ship" value="0" />
+        <span id="n1">x1</span><br />
+        <span id="p2">Carrier</span> <input type="radio" id="s2" name="ship" value="1" />
+        <span id="n2">x1</span><br />
+        <span id="p3">Battleship</span> <input type="radio" id="s3" name="ship" value="2" />
+        <span id="n3">x2</span><br />
+        <span id="p4">Patrol Boat</span> <input type="radio" id="s4" name="ship" value="3" />
+        <span id="n4">x3</span><br />
+        <span id="p5">Cruiser</span> <input type="radio" id="s5" name="ship" value="4" />
+        <span id="n5">x2</span><br />
+        <br />
+        Delete <input type="radio" id="s6" name="ship" value="5" />
+        <span style="color: rgba(0, 0, 0, 0)">x0</span><br />
+      </div>
+    </div>
 
-    <script src="/AdvancedCtx.js"></script>
-    <script src="/Ship.js"></script>
-    <script src="/Board.js"></script>
-    <script src="/Game.js"></script>
-    <script src="/Grid.js"></script>
-    <script src="/Player.js"></script>
-    <script src="/Url.js"></script>
+    <div>
+      <canvas
+        id="battleship"
+        width="847"
+        height="847"
+        onmousemove="cursor(event)"
+        onclick="cursorClick()"
+      ></canvas>
+    </div>
+    <button id="button_ready">Ready</button>
   </body>
+  <script src="/battleship/AdvancedCtx.js"></script>
+  <script src="/battleship/Ship.js"></script>
+  <script src="/battleship/Board.js"></script>
+  <script src="/battleship/Game.js"></script>
+  <script src="/battleship/Grid.js"></script>
+  <script src="/battleship/Player.js"></script>
+  <script src="/battleship/Url.js"></script>
+  <script src="/controler/function.js"></script>
+  <script src="/controler/main.js"></script>
 </html>
