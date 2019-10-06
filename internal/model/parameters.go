@@ -41,9 +41,10 @@ func (params *Parameters) fitShips(ships []Ship) bool {
 
 	for _, ship := range ships {
 		pos := ship.Position
-		maxX, maxY := pos.X, pos.Y
+		loc := pos.Location
+		maxX, maxY := loc.X, loc.Y
 
-		if pos.X < 1 || pos.Y < 1 {
+		if loc.X < 1 || loc.Y < 1 {
 			return false
 		}
 
@@ -79,9 +80,10 @@ func (params *Parameters) checkShipsOverlaps(ships []Ship) bool {
 
 	for _, ship := range ships {
 		pos := ship.Position
+		loc := pos.Location
 		length := ship.Type.Length
 
-		x, y := pos.X, pos.Y
+		x, y := loc.X, loc.Y
 
 		for i := 0; i < length; i++ {
 			x, y = getNextPos(x, y, pos.Orientation)
