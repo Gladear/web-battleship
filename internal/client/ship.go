@@ -9,7 +9,7 @@ import (
 type ShipType string
 
 // ToModel converts a client ship type to ship type of the model
-func (shipType ShipType) ToModel(battle *model.Battle) *model.ShipType {
+func (shipType ShipType) ToModel(battle model.Battle) *model.ShipType {
 	for _, modelType := range battle.Params.Ships {
 		if modelType.Name == string(shipType) {
 			return &modelType
@@ -26,7 +26,7 @@ type Ship struct {
 }
 
 // ToModel converts a client ship to a ship of the model
-func (ship *Ship) ToModel(battle *model.Battle) model.Ship {
+func (ship *Ship) ToModel(battle model.Battle) model.Ship {
 	return model.Ship{
 		Type:     ship.Type.ToModel(battle),
 		Position: ship.Position.ToModel(battle),

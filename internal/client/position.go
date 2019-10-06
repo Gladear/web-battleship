@@ -6,7 +6,7 @@ import "web-battleship/internal/model"
 type Column string
 
 // ToModel converts the colmun to the model X position
-func (col Column) ToModel(battle *model.Battle) int {
+func (col Column) ToModel(battle model.Battle) int {
 	return int(col[0]) - int('a') + 1
 }
 
@@ -14,7 +14,7 @@ func (col Column) ToModel(battle *model.Battle) int {
 type Row int
 
 // ToModel converts the row to the model Y position
-func (row Row) ToModel(battle *model.Battle) int {
+func (row Row) ToModel(battle model.Battle) int {
 	return int(row)
 }
 
@@ -25,7 +25,7 @@ type Location struct {
 }
 
 // ToModel converts a client position to a position of the model
-func (location *Location) ToModel(battle *model.Battle) model.Location {
+func (location *Location) ToModel(battle model.Battle) model.Location {
 	return model.Location{
 		X: location.X.ToModel(battle),
 		Y: location.Y.ToModel(battle),
@@ -39,7 +39,7 @@ type Position struct {
 }
 
 // ToModel converts a client ship's position to a position of the model
-func (position *Position) ToModel(battle *model.Battle) model.Position {
+func (position *Position) ToModel(battle model.Battle) model.Position {
 	return model.Position{
 		Location:    position.Location.ToModel(battle),
 		Orientation: position.Orientation.ToModel(battle),
