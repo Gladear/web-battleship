@@ -106,8 +106,12 @@ func generateParameters() Parameters {
 		Ships: []ShipType{
 			ShipType{"Carrier", 5},
 			ShipType{"Battleship", 4},
+			ShipType{"Battleship", 4},
+			ShipType{"Cruiser", 3},
 			ShipType{"Cruiser", 3},
 			ShipType{"Submarine", 3},
+			ShipType{"Patrol Boat", 2},
+			ShipType{"Patrol Boat", 2},
 			ShipType{"Patrol Boat", 2},
 		},
 	}
