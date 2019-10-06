@@ -6,4 +6,5 @@ const (
 	IncorrectState   = "incorrect_state"
 
 	BadPlacement = "bad_placement"
+	WrongTurn = "wrong_turn"
 )
