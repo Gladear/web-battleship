@@ -31,3 +31,19 @@ func (pos Position) Equals(other Position) bool {
 	return pos.Location.Equals(other.Location) &&
 		pos.Orientation == other.Orientation
 }
+
+// Next returns the position next to the current one
+func (pos Position) Next() Position {
+	x, y := pos.Location.X, pos.Location.Y
+
+	if pos.Orientation == Horizontal {
+		x++
+	} else {
+		y++
+	}
+
+	return Position{
+		Location: Location{x, y},
+		Orientation: pos.Orientation,
+	}
+}

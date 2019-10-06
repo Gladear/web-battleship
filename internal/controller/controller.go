@@ -70,6 +70,8 @@ func HandlePlayer(player Player) error {
 			game = handleJoin(player, message.Payload)
 		case msg.Ready:
 			err = game.handleReady(player, message.Payload)
+		case msg.Fire:
+			err = game.handleFire(player, message.Payload)
 		}
 
 		if err != nil {

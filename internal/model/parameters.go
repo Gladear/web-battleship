@@ -63,14 +63,6 @@ func (params *Parameters) fitShips(ships []Ship) bool {
 	return true
 }
 
-func getNextPos(x, y int, orientation Orientation) (int, int) {
-	if orientation == Horizontal {
-		return x + 1, y
-	}
-
-	return x, y + 1
-}
-
 func (params *Parameters) checkShipsOverlaps(ships []Ship) bool {
 	grid := make([][]bool, params.Width)
 
@@ -80,19 +72,16 @@ func (params *Parameters) checkShipsOverlaps(ships []Ship) bool {
 
 	for _, ship := range ships {
 		pos := ship.Position
-		loc := pos.Location
 		length := ship.Type.Length
 
-		x, y := loc.X, loc.Y
-
 		for i := 0; i < length; i++ {
-			x, y = getNextPos(x, y, pos.Orientation)
-
-			if grid[x][y] {
+			if grid[pos.Location.X][pos.Location.Y] {
 				return false
 			}
 
-			grid[x][y] = true
+			grid[pos.Location.X][pos.Location.Y] = true
+
+			pos = pos.Next()
 		}
 	}
 
