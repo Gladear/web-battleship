@@ -8,7 +8,7 @@ function send_join(){
 	
 function send_ready(){
     
-    if(!nbSubmarine && !nbCarrier && !nbBattleship && !nbPatrolBoat && !nbCruiser){
+    if(gameReady()){
         
         shipsToModel = convertShipsToModel();
 
@@ -18,8 +18,7 @@ function send_ready(){
         };
         ws.onclose = () => log('connection closed');
 
-        placementPhase = false;
-        document.getElementById("ships").style.display = "none";
+        updateUI();
         
     }
 };

@@ -1,4 +1,4 @@
-var canvas = document.getElementById("battleship");
+var canvas = document.getElementById("battleship_board");
 var context = canvas.getContext("2d");
 canvas.style.cursor = "crosshair";
 
@@ -8,12 +8,16 @@ var d = new Date();
 var time = d.getMilliseconds();
 var newTime;
 var t = 0;
+var turn = 1;
+
+var Sh_ips;
+var Damage;
 
 var windowsLength = canvas.width;
 var windowsHeight = canvas.height;
 var canvasBound = canvas.getBoundingClientRect();
-var windowsOffsetLen = canvasBound.left;
-var windowsOffsetHei = canvasBound.top;
+var windowsOffsetLen = canvasBound.left + window.scrollX;
+var windowsOffsetHei = canvasBound.top + window.scrollY;
 
 var gameLineNumber = 10;
 var gameColNumber = 10;
@@ -23,6 +27,26 @@ var gridCaseHeight = windowsHeight/(gameColNumber+1);
 
 var gameBoardLength = gridCaseLength*gameColNumber;
 var gameBoardHeight = gridCaseLength*gameLineNumber;
+
+var sub = document.getElementById("subC");
+var subC = sub.getContext("2d");
+var subAC = new AdvancedCtx(subC);
+
+var car = document.getElementById("carC");
+var carC = car.getContext("2d");
+var carAC = new AdvancedCtx(carC);
+
+var bat = document.getElementById("batC");
+var batC = bat.getContext("2d");
+var batAC = new AdvancedCtx(batC);
+
+var pat = document.getElementById("patC");
+var patC = pat.getContext("2d");
+var patAC = new AdvancedCtx(patC);
+
+var cru = document.getElementById("cruC");
+var cruC = cru.getContext("2d");
+var cruAC = new AdvancedCtx(cruC);
 
 var oceanWaveColor = "#5489d1";
 var oceanColor = "#2f70c7";
@@ -47,6 +71,9 @@ var nbPatrolBoat = 3;
 
 var playerNumber;
 
+var windowXInit;
+var windowYInit;
+
 function frame(){
     
     board.draw();
@@ -70,10 +97,15 @@ function clock(){
 function init(){
 
     playerNumber = $_GET("player");
+    Sh_ips = new ShipNotGame();
+    Damage = new DamageNotGame();
     
     if(!(playerNumber != 1 && playerNumber != 2)){
         
         initGamePage();
+        
+        windowXInit = windowsOffsetLen;
+        windowYInit = windowsOffsetHei;
     
         //Init Advanced ctx
         advCtx = new AdvancedCtx(context,);
@@ -90,22 +122,38 @@ function init(){
 
         //Init Board
         board = new Board(grid,players);
+        
+        var ship_demo = new ShipNotGame();
+
+        ship_demo.draw(0,0,18,40,10,subAC);
+        ship_demo.draw(1,0,18,40,7,carAC);
+        ship_demo.draw(2,0,18,40,10,batAC);
+        ship_demo.draw(3,0,18,40,10,patAC);
+        ship_demo.draw(4,0,18,40,10,cruAC);
 
         clock();
     }
 }
 
-
 function cursor(event){
     
-    var x = event.clientX - windowsOffsetLen;
-    var y = event.clientY - windowsOffsetHei;
+    var x = event.clientX - windowsOffsetLen + window.scrollX;
+    var y = event.clientY - windowsOffsetHei + window.scrollY;
     
     var len = parseInt(x / gridCaseLength);
     var hei = parseInt(y / gridCaseHeight);
     
     board.setSelectedCoord(len,hei); 
     
+}
+
+function isPlayerTurn(){
+    return turn == playerNumber;
+}
+
+function firePositionValid(){
+    //TODO LOIC
+    return true;
 }
 
 function cursorClick(){
@@ -129,7 +177,7 @@ function cursorClick(){
                 document.getElementById('p1').style.color = "rgba(0, 0, 0, 0.5)";
             }
 
-            document.getElementById('n1').innerHTML = "x"+nbSubmarine;
+            updateShipNumber();
             board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,0,or));        
             
         }
@@ -143,7 +191,7 @@ function cursorClick(){
                 document.getElementById('p2').style.color = "rgba(0, 0, 0, 0.5)";
             }
             
-            document.getElementById('n2').innerHTML = "x"+nbCarrier;
+            updateShipNumber();
             board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,1,or));
             
         }
@@ -157,7 +205,7 @@ function cursorClick(){
                 document.getElementById('p3').style.color = "rgba(0, 0, 0, 0.5)";
             }
             
-            document.getElementById('n3').innerHTML = "x"+nbBattleship;
+            updateShipNumber();
             board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,2,or));
             
         }
@@ -171,7 +219,7 @@ function cursorClick(){
                 document.getElementById('p4').style.color = "rgba(0, 0, 0, 0.5)";
             }
             
-            document.getElementById('n4').innerHTML = "x"+nbPatrolBoat;
+            updateShipNumber();
             board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,3,or));
             
         }
@@ -185,7 +233,7 @@ function cursorClick(){
                 document.getElementById('p5').style.color = "rgba(0, 0, 0, 0.5)";  
             }
             
-            document.getElementById('n5').innerHTML = "x"+nbCruiser;
+            updateShipNumber();
             board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,4,or));
             
         }
@@ -234,5 +282,78 @@ function cursorClick(){
         }
         
     }
+    
+}
+
+function updateUIFire(){
+    
+    if(isPlayerTurn()){
+        document.getElementById("button_fire").disabled = "false";
+    } else {
+        document.getElementById("button_fire").disabled = "true";
+    }
+    
+}
+
+function recieveFire(){
+    
+    //Recieve enemy fire
+    
+    
+    //Update the UI
+    turn = playerNumber;
+    updateUIFire();
+}
+
+function fire(){
+    
+    if(isPlayerTurn() && firePositionValid()){
+        
+        //Send to server
+        
+        
+        //Update the UI
+        turn = playerNumber==1 ? 2 : 1;
+        updateUIFire();
+        
+    }
+    
+    console.log("test");
+    
+}
+
+function gameReady(){
+    //return !nbSubmarine && !nbCarrier && !nbBattleship && !nbPatrolBoat && !nbCruiser;
+    return true;
+}
+
+function updateUI(){
+    
+    placementPhase = false;
+    document.getElementById("button_ready").style.display = "none";
+    document.getElementById("button_fire").style.display = "block";
+    
+    updateUIFire();
+    
+    document.getElementById("o1l").style.display = "none";
+    document.getElementById("o2l").style.display = "none";
+    document.getElementById("s6l").style.display = "none";
+    
+    nbSubmarine = 1;
+    nbCarrier = 1;
+    nbBattleship = 2;
+    nbCruiser = 2;
+    nbPatrolBoat = 3; 
+    
+    updateShipNumber();
+}
+
+function updateShipNumber(){
+    
+    document.getElementById('n1').innerHTML = "x"+nbSubmarine;
+    document.getElementById('n2').innerHTML = "x"+nbCarrier;
+    document.getElementById('n3').innerHTML = "x"+nbBattleship;
+    document.getElementById('n4').innerHTML = "x"+nbPatrolBoat;
+    document.getElementById('n5').innerHTML = "x"+nbCruiser;
     
 }
