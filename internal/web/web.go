@@ -15,29 +15,30 @@ const (
 
 func handleRequest(resp http.ResponseWriter, req *http.Request) {
 	path := strings.TrimRight(req.URL.Path, "/")
+
+	if path == "" {
+		path = "/index.html"
+	}
+
+	ext := filepath.Ext(path)
+
+	if ext == "" {
+		ext = ".html"
+		path += ext
+	}
+
 	file, err := webdir.Open(path)
 
 	if err != nil {
-		switch {
-		case path == "":
-			path = "index.html"
-		case path == "/rules" || path == "/play":
-			path += ".html"
-		}
-
-		file, err = webdir.Open(path)
-
-		if err != nil {
-			http.NotFound(resp, req)
-			return
-		}
+		http.NotFound(resp, req)
+		return
 	}
 
 	stat, err := file.Stat()
 	if err != nil {
 		headers := resp.Header()
 		headers.Set("Content-Length", fmt.Sprintf("%d(MISSING)", stat.Size()))
-		headers.Set("Content-Type", mime.TypeByExtension(filepath.Ext(stat.Name())))
+		headers.Set("Content-Type", mime.TypeByExtension(ext))
 	}
 
 	http.ServeFile(resp, req, webpath+path)
