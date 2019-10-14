@@ -34,14 +34,18 @@ func (location *Location) ToModel(battle model.Battle) model.Location {
 
 // Position is the position of a ship as received from the client
 type Position struct {
-	Location    Location
+	X Column
+	Y Row
 	Orientation Orientation
 }
 
 // ToModel converts a client ship's position to a position of the model
 func (position *Position) ToModel(battle model.Battle) model.Position {
 	return model.Position{
-		Location:    position.Location.ToModel(battle),
+		Location: model.Location{
+			X: position.X.ToModel(battle),
+			Y: position.Y.ToModel(battle),
+		},
 		Orientation: position.Orientation.ToModel(battle),
 	}
 }
