@@ -19,11 +19,7 @@
     </code>
 
     <script type="module">
-      import { log, makeSend } from './controler/debug.js';
-
-      const ws = new WebSocket(`ws://${location.host}/endpoint`);
-
-      const send = makeSend(ws);
+      import { log, send, ws } from '../controler/debug.js';
 
       const ships = [
         {
@@ -166,8 +162,6 @@
 
         step++;
       };
-
-      ws.onclose = () => log('connection closed');
 
       window.addEventListener('close', () => {
         ws.close(1000, 'quitting');

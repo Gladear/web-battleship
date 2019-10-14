@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Homepage</title>
+    <style>
+      li {
+        list-style: none;
+        margin-bottom: 0.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Homepage</h1>
+    <form id="join">
+      <input type="text" name="hash" />
+      <button type="submit">Se connecter</button>
+    </form>
+    <code>
+      <pre><ul id="debug"></ul></pre>
+    </code>
+
+    <script type="module">
+      import { log, send, ws } from '../controler/debug.js';
+
+      const { join } = document.forms;
+
+      join.onsubmit = event => {
+        event.preventDefault();
+        send({ action: 'join', payload: join.hash.value });
+      };
+
+      const ships = [
+        {
+          position: {
+            x: 'b',
+            y: 2,
+            orientation: 'H',
+          },
+          type: 'Carrier',
+        },
+        {
+          position: {
+            x: 'a',
+            y: 1,
+            orientation: 'V',
+          },
+          type: 'Battleship',
+        },
+        {
+          position: {
+            x: 'a',
+            y: 6,
+            orientation: 'V',
+          },
+          type: 'Battleship',
+        },
+        {
+          position: {
+            x: 'c',
+            y: 3,
+            orientation: 'H',
+          },
+          type: 'Cruiser',
+        },
+        {
+          position: {
+            x: 'd',
+            y: 4,
+            orientation: 'H',
+          },
+          type: 'Cruiser',
+        },
+        {
+          position: {
+            x: 'd',
+            y: 5,
+            orientation: 'H',
+          },
+          type: 'Submarine',
+        },
+        {
+          position: {
+            x: 'd',
+            y: 6,
+            orientation: 'H',
+          },
+          type: 'Patrol Boat',
+        },
+        {
+          position: {
+            x: 'd',
+            y: 7,
+            orientation: 'H',
+          },
+          type: 'Patrol Boat',
+        },
+        {
+          position: {
+            x: 'd',
+            y: 8,
+            orientation: 'H',
+          },
+          type: 'Patrol Boat',
+        },
+      ];
+
+      let step = 0;
+
+      ws.onopen = () => {
+        log(`connected to ${ws.url}`);
+      };
+
+      ws.onmessage = async event => {
+        const { data } = event;
+        const message = JSON.parse(data);
+        log('received message: ', message);
+
+        switch (step) {
+          case 0:
+            log('test: send ready message');
+            send({
+              action: 'ready',
+              payload: ships,
+            });
+            break;
+        }
+
+        step++;
+      };
+
+      window.addEventListener('close', () => ws.close(1000, 'quitting'));
+    </script>
+  </body>
+</html>
