@@ -7,10 +7,10 @@ import (
 )
 
 type firePayload struct {
-	location client.Location
-	affected bool
-	cast     bool
-	end      bool
+	Location client.Location `json:"location"`
+	Affected bool            `json:"affected"`
+	Cast     bool            `json:"cast"`
+	End      bool            `json:"end"`
 }
 
 // handleFire is called whenever a player shoots at the enemy
@@ -40,10 +40,10 @@ func (game *Game) handleFire(player Player, _payload json.RawMessage) error {
 	}
 
 	game.sendPlayers(msg.New(msg.Fire, firePayload{
-		location: payload,
-		affected: affected,
-		cast:     cast,
-		end:      end,
+		Location: payload,
+		Affected: affected,
+		Cast:     cast,
+		End:      end,
 	}))
 
 	return nil

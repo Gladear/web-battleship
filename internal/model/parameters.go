@@ -44,7 +44,7 @@ func (params *Parameters) fitShips(ships []Ship) bool {
 		loc := pos.Location
 		maxX, maxY := loc.X, loc.Y
 
-		if loc.X < 1 || loc.Y < 1 {
+		if loc.X < 0 || loc.Y < 0 {
 			return false
 		}
 
@@ -55,7 +55,7 @@ func (params *Parameters) fitShips(ships []Ship) bool {
 			maxY += ship.Type.Length
 		}
 
-		if maxX > width || maxY > height {
+		if maxX >= width || maxY >= height {
 			return false
 		}
 	}

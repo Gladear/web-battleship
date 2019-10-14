@@ -19,7 +19,7 @@
     </code>
 
     <script type="module">
-      import { log, send, ws } from '../controler/debug.js';
+      import { log, send, ws, sleep } from '../controler/debug.js';
 
       const ships = [
         {
@@ -156,6 +156,23 @@
             send({
               action: 'ready',
               payload: ships,
+            });
+            break;
+          case 4:
+            // ack
+            break;
+          case 5:
+            // start
+            // Wait while other player tries to shoot
+            await sleep(300);
+
+            log('test: send fire message with no ship');
+            send({
+              action: 'fire',
+              payload: {
+                x: 'j',
+                y: 10,
+              },
             });
             break;
         }

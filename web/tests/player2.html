@@ -126,6 +126,30 @@
               payload: ships,
             });
             break;
+          case 1:
+            // ack
+            break;
+          case 2:
+            // start
+            log('test: try to fire while not turn');
+            send({
+              action: 'fire',
+              payload: {
+                x: 'a',
+                y: 1,
+              },
+            });
+            break;
+          case 3:
+            // fire
+            log('test: respond to fire');
+            send({
+              action: 'fire',
+              payload: {
+                x: 'a',
+                y: 1,
+              },
+            });
         }
 
         step++;

@@ -49,7 +49,9 @@ func (game *Game) handlePlayerReady(player *Player) error {
 	game.Ready = append(game.Ready, player)
 
 	if len(game.Ready) == 2 {
+		err := game.Battle.Start()
 		game.sendPlayers(msg.New(msg.Start, nil))
+		return err
 	}
 
 	return nil

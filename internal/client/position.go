@@ -7,7 +7,7 @@ type Column string
 
 // ToModel converts the colmun to the model X position
 func (col Column) ToModel(battle model.Battle) int {
-	return int(col[0]) - int('a') + 1
+	return int(col[0]) - int('a')
 }
 
 // Row is the Y position as received from the client
@@ -15,13 +15,13 @@ type Row int
 
 // ToModel converts the row to the model Y position
 func (row Row) ToModel(battle model.Battle) int {
-	return int(row)
+	return int(row) - 1
 }
 
 // Location is the representation of a case as received from the client
 type Location struct {
-	X Column
-	Y Row
+	X Column `json:"x"`
+	Y Row    `json:"y"`
 }
 
 // ToModel converts a client position to a position of the model
@@ -34,8 +34,8 @@ func (location *Location) ToModel(battle model.Battle) model.Location {
 
 // Position is the position of a ship as received from the client
 type Position struct {
-	X Column
-	Y Row
+	X           Column
+	Y           Row
 	Orientation Orientation
 }
 
