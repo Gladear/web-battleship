@@ -148,12 +148,7 @@ function cursor(event){
 }
 
 function isPlayerTurn(){
-    return turn == playerNumber;
-}
-
-function firePositionValid(){
-    //TODO LOIC
-    return true;
+    return !placementPhase && turn == playerNumber;
 }
 
 function cursorClick(){
@@ -281,6 +276,8 @@ function cursorClick(){
             
         }
         
+    } else {
+        board.setFireCoord();
     }
     
 }
@@ -288,11 +285,21 @@ function cursorClick(){
 function updateUIFire(){
     
     if(isPlayerTurn()){
-        document.getElementById("button_fire").disabled = "false";
+        document.getElementById("button_fire").disabled = false;
     } else {
-        document.getElementById("button_fire").disabled = "true";
+        document.getElementById("button_fire").disabled = true;
     }
     
+    setTimeout(updateView, 1000);
+    
+}
+
+function updateView(){
+    if(isPlayerTurn()){
+        displayOwnView = false;
+    } else {
+        displayOwnView = true;
+    }
 }
 
 function recieveFire(){
@@ -307,14 +314,18 @@ function recieveFire(){
 
 function fire(){
     
-    if(isPlayerTurn() && firePositionValid()){
+    if(isPlayerTurn() && board.firePositionValid()){
         
         //Send to server
         
         
+        var newPos = {x:board.fireX,y:board.fireY}; 
+        board.addPosEnemy(newPos);
+        
         //Update the UI
         turn = playerNumber==1 ? 2 : 1;
         updateUIFire();
+        board.resetFireCase();
         
     }
     
@@ -323,8 +334,7 @@ function fire(){
 }
 
 function gameReady(){
-    //return !nbSubmarine && !nbCarrier && !nbBattleship && !nbPatrolBoat && !nbCruiser;
-    return true;
+    return !nbSubmarine && !nbCarrier && !nbBattleship && !nbPatrolBoat && !nbCruiser;
 }
 
 function updateUI(){

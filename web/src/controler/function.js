@@ -1,9 +1,16 @@
-function send_join(){
+function send_join(hash){
     ws.onopen = () => {
-        log(`connected to ${ws.url}`);
-        send({ action: 'join', payload: join.hash.value });
+        console.log('connected to ${ws.url}');
+        send({ action: 'join', payload: hash});
     };
-    ws.onclose = () => log('connection closed');
+    
+    ws.onmessage = event => {
+        const { data } = event;
+        const message = JSON.parse(data);
+        console.log('received message: ', message);
+    };
+    
+    ws.onclose = () => console.log('connection closed');
 };
 	
 function send_ready(){
@@ -13,10 +20,17 @@ function send_ready(){
         shipsToModel = convertShipsToModel();
 
         ws.onopen = () => {
-            log('test: send correct ready message');
-            send({action: 'ready', payload: shipsToModel,});
+            console.log('test: send correct ready message');
+            send({action: 'ready', payload: shipsToModel});
         };
-        ws.onclose = () => log('connection closed');
+        
+        ws.onmessage = event => {
+            const { data } = event;
+            const message = JSON.parse(data);
+            console.log('received message: ', message);
+        };
+        
+        ws.onclose = () => console.log('connection closed');
 
         updateUI();
         
@@ -79,10 +93,19 @@ function convertShipsToModel(){
     return shipsToModel;
 }
 
-function send_create(){   
+function send_create(){ 
+    
     ws.onopen = () => {
         log(`connected to ${ws.url}`);
         send({ action: 'create' });
     };
+    
+    ws.onmessage = event => {
+        const { data } = event;
+        const message = JSON.parse(data);
+        console.log('received message: ', message);
+    };
+    
     ws.onclose = () => log('connection closed');
+    
 };

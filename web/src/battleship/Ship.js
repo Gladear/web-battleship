@@ -92,7 +92,7 @@ class Ship {
                     break;
             }
             
-            Damage.draw(advCtx);
+            //Damage.draw(advCtx);
             
         } else {
             
