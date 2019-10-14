@@ -6,13 +6,7 @@ import (
 	"web-battleship/internal/msg"
 )
 
-type playerFirePayload struct {
-	affected bool
-	cast     bool
-	end      bool
-}
-
-type enemyFirePayload struct {
+type firePayload struct {
 	location client.Location
 	affected bool
 	cast     bool
@@ -45,14 +39,15 @@ func (game *Game) handleFire(player Player, _payload json.RawMessage) error {
 		panic(err)
 	}
 
-	player.Send(msg.New(msg.Fire, playerFirePayload{
+	player.Send(msg.New(msg.Fire, firePayload{
+		location: payload,
 		affected: affected,
 		cast:     cast,
 		end:      end,
 	}))
 
 	enemy := game.Battle.GetOtherPlayer(player)
-	enemy.(Player).Send(msg.New(msg.Fire, enemyFirePayload{
+	enemy.(Player).Send(msg.New(msg.Fire, firePayload{
 		location: payload,
 		affected: affected,
 		cast:     cast,

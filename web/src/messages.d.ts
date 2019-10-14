@@ -22,6 +22,7 @@ interface Location {
 }
 
 interface FireResponse {
+  location: Location,
   affected: boolean,
   cast: boolean,
   end: boolean,
