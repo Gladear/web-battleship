@@ -1,7 +1,5 @@
 package model
 
-import "errors"
-
 // Player represents one player
 type Player interface{}
 
@@ -68,10 +66,11 @@ func (battle *Battle) Fire(location Location) (affected bool, cast bool, end boo
 	enemy := battle.GetNextPlayer()
 	board := battle.boards[enemy]
 
-	if board.isFired(location) {
-		err = errors.New("Location was already fired at")
+	if err = board.fireAt(location); err != nil {
 		return
 	}
+
+	battle.turn = enemy
 
 	ship := board.get(location)
 
@@ -87,8 +86,6 @@ func (battle *Battle) Fire(location Location) (affected bool, cast bool, end boo
 
 	cast = true
 	end = !board.hasRemainingShips()
-
-	battle.turn = battle.GetNextPlayer()
 
 	return
 }

@@ -40,11 +40,11 @@ func (ship Ship) MatchLocation(location Location) bool {
 
 	if pos.Orientation == Horizontal {
 		return location.Y == loc.Y &&
-			location.X > loc.X &&
+			location.X >= loc.X &&
 			location.X < loc.X+ship.Type.Length
 	}
 
 	return location.X == loc.X &&
-		location.Y > loc.Y &&
+		location.Y >= loc.Y &&
 		location.Y < loc.Y+ship.Type.Length
 }

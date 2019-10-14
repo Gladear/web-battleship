@@ -175,6 +175,20 @@
               },
             });
             break;
+          case 6:
+            // ack
+            break;
+          case 7:
+            // enemy fire
+            log('test: whatever');
+            send({
+              action: 'fire',
+              payload: {
+                x: 'c',
+                y: 5,
+              },
+            });
+            break;
         }
 
         step++;

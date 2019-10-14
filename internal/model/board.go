@@ -1,5 +1,9 @@
 package model
 
+import (
+	"errors"
+)
+
 // The Board represents the grid of the game
 type Board struct {
 	Ships []Ship
@@ -18,6 +22,16 @@ func (board Board) get(location Location) *Ship {
 
 func (board Board) isFired(location Location) bool {
 	return board.Fired[location.X][location.Y]
+}
+
+func (board *Board) fireAt(location Location) error {
+	if board.isFired(location) {
+		return errors.New("Location was already fired at")
+	}
+
+	board.Fired[location.X][location.Y] = true
+
+	return nil
 }
 
 func (board Board) isCast(ship *Ship) bool {

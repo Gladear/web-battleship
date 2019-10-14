@@ -141,15 +141,32 @@
             });
             break;
           case 3:
+            // error message
+            break;
+          case 4:
             // fire
             log('test: respond to fire');
             send({
               action: 'fire',
               payload: {
-                x: 'a',
-                y: 1,
+                x: 'd',
+                y: 8,
               },
             });
+          case 5:
+            // ack
+            break;
+          case 6:
+            // enemy fire
+            log('test: break boat');
+            send({
+              action: 'fire',
+              payload: {
+                x: 'e',
+                y: 8,
+              },
+            });
+            break;
         }
 
         step++;
