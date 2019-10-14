@@ -37,7 +37,20 @@ func (game *Game) handleReady(player Player, _payload json.RawMessage) error {
 
 	player.Send(msg.New(msg.Ack, nil))
 
-	game.Ready++
+	if err := game.handlePlayerReady(&player); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (game *Game) handlePlayerReady(player *Player) error {
+	// TODO Check for errors
+	game.Ready = append(game.Ready, player)
+
+	if len(game.Ready) == 2 {
+		game.sendPlayers(msg.New(msg.Start, nil))
+	}
 
 	return nil
 }

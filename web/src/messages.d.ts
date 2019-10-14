@@ -21,7 +21,7 @@ interface Location {
   y: number,
 }
 
-interface FireResponse {
+interface FireMessage {
   location: Location,
   affected: boolean,
   cast: boolean,
@@ -45,5 +45,6 @@ type CustomError =
 interface ReceivedMessages {
   "ack": null,
   "error": CustomError,
-  "fire": FireResponse,
+  "start": null,
+  "fire": FireMessage,
 }

@@ -9,6 +9,7 @@ const (
 	Error      Action = "error"
 
 	Ready Action = "ready"
+	Start Action = "start"
 	Fire  Action = "fire"
 )
 
