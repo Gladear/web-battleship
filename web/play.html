@@ -10,21 +10,21 @@
         <h1 id="title_in_game">Battleship</h1>
 
         <div id="ships_tab">
-            
+
             <h1 class="tab_title">Ships</h1>
-            
+
             <div>
-                
+
                 <label for="o1" id="o1l">Horizontal <input type="radio" id="o1" name="or" value="0" checked="true" />
                     <span style="color: rgba(0, 0, 0, 0)">x0</span></label>
-                
+
                 <br />
-                
+
                 <label for="o2" id="o2l">Vertical <input type="radio" id="o2" name="or" value="1" />
                     <span style="color: rgba(0, 0, 0, 0)">x0</span></label>
-                
+
                 <br />
-                
+
             </div>
             <br />
             <div>
@@ -50,21 +50,21 @@
         </div>
 
         <canvas id="battleship_board" width="847" height="847" onmousemove="cursor(event)" onclick="cursorClick()"></canvas>
-        
+
         <div id="action_tab">
-            
+
             <h1 class="tab_title">Actions</h1>
-            
+
             <button id="button_ready" class="menu_button">Ready</button>
-            
+
             <button id="button_fire" style="display: none" class="fire_button">Fire</button>
-            
+
             <br/>
-            
+
             <button id="button_left" class="menu_button">Left</button>
         </div>
     </body>
-    
+
     <script src="./src/battleship/AdvancedCtx.js"></script>
     <script src="./src/battleship/Ship.js"></script>
     <script src="./src/battleship/Board.js"></script>
@@ -72,11 +72,13 @@
     <script src="./src/battleship/Grid.js"></script>
     <script src="./src/battleship/Player.js"></script>
     <script src="./src/battleship/Url.js"></script>
-    
+
     <script src="./src/battleship/ShipNotGame.js"></script>
     <script src="./src/battleship/DamageNotGame.js"></script>
-    
+
     <script src="./src/controler/function.js"></script>
     <script src="./src/controler/main.js"></script>
-    
+
+    <script src="./src/controler/play.js" type="module"></script>
+
 </html>
