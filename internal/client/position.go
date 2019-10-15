@@ -6,30 +6,46 @@ import "web-battleship/internal/model"
 type Column string
 
 // ToModel converts the colmun to the model X position
-func (col Column) ToModel(battle *model.Battle) int {
-	return int(col[0]) - int('a') + 1
+func (col Column) ToModel(battle model.Battle) int {
+	return int(col[0]) - int('a')
 }
 
 // Row is the Y position as received from the client
 type Row int
 
 // ToModel converts the row to the model Y position
-func (row Row) ToModel(battle *model.Battle) int {
-	return int(row)
+func (row Row) ToModel(battle model.Battle) int {
+	return int(row) - 1
 }
 
-// Position is a position as received from the client
+// Location is the representation of a case as received from the client
+type Location struct {
+	X Column `json:"x"`
+	Y Row    `json:"y"`
+}
+
+// ToModel converts a client position to a position of the model
+func (location *Location) ToModel(battle model.Battle) model.Location {
+	return model.Location{
+		X: location.X.ToModel(battle),
+		Y: location.Y.ToModel(battle),
+	}
+}
+
+// Position is the position of a ship as received from the client
 type Position struct {
 	X           Column
 	Y           Row
 	Orientation Orientation
 }
 
-// ToModel converts a client position to a position of the model
-func (position *Position) ToModel(battle *model.Battle) model.Position {
+// ToModel converts a client ship's position to a position of the model
+func (position *Position) ToModel(battle model.Battle) model.Position {
 	return model.Position{
-		X:           position.X.ToModel(battle),
-		Y:           position.Y.ToModel(battle),
+		Location: model.Location{
+			X: position.X.ToModel(battle),
+			Y: position.Y.ToModel(battle),
+		},
 		Orientation: position.Orientation.ToModel(battle),
 	}
 }

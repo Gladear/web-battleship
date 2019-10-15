@@ -1,12 +1,16 @@
 package msg
 
-// Received actions
+// Actions of the game
 const (
 	Create     Action = "create"
 	Join       Action = "join"
 	Disconnect Action = "disconnect"
+	Ack        Action = "ack"
+	Error      Action = "error"
 
 	Ready Action = "ready"
+	Start Action = "start"
+	Fire  Action = "fire"
 )
 
 // RequireConnected checks if the player must be connected to a battle

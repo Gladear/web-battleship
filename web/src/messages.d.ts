@@ -3,9 +3,9 @@ type BattleID = string;
 
 // "ready"
 interface Position {
-  x: number;
-  y: number;
-  orientation: 'H' | 'V';
+  x: string,
+  y: number,
+  orientation: 'H' | 'V',
 }
 
 type ShipType = string;
@@ -15,13 +15,36 @@ interface Ship {
   type: ShipType,
 }
 
-type MessageTypes = {
+// "fire"
+interface Location {
+  x: string,
+  y: number,
+}
+
+interface FireMessage {
+  location: Location,
+  affected: boolean,
+  cast: boolean,
+  end: boolean,
+}
+
+interface SentMessages {
   "create": null,
   "join": BattleID,
   "ready": Ship[],
+  "fire": Location,
 }
 
-interface Message<K extends keyof MessageTypes> {
-  action: K,
-  payload: MessageTypes[K]
+type CustomError =
+  'unexisting_battle'
+  | 'incorrect_state'
+  | 'bad_placement'
+  | 'wrong_turn'
+  | 'already_fired';
+
+interface ReceivedMessages {
+  "ack": null,
+  "error": CustomError,
+  "start": null,
+  "fire": FireMessage,
 }

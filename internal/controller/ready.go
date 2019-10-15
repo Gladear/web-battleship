@@ -10,7 +10,7 @@ import (
 // readyPayload is the payload for the ready action
 type readyPayload []client.Ship
 
-func (payload readyPayload) ToModel(battle *model.Battle) []model.Ship {
+func (payload readyPayload) ToModel(battle model.Battle) []model.Ship {
 	ships := make([]model.Ship, 0, len(payload))
 
 	for _, ship := range payload {
@@ -29,7 +29,7 @@ func (game *Game) handleReady(player Player, _payload json.RawMessage) error {
 		return err
 	}
 
-	ships := payload.ToModel(&game.Battle)
+	ships := payload.ToModel(game.Battle)
 
 	if !game.Battle.AddShips(player, ships) {
 		return player.Send(msg.NewError(msg.BadPlacement))
@@ -37,7 +37,22 @@ func (game *Game) handleReady(player Player, _payload json.RawMessage) error {
 
 	player.Send(msg.New(msg.Ack, nil))
 
-	game.Ready++
+	if err := game.handlePlayerReady(&player); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (game *Game) handlePlayerReady(player *Player) error {
+	// TODO Check for errors
+	game.Ready = append(game.Ready, player)
+
+	if len(game.Ready) == 2 {
+		err := game.Battle.Start()
+		game.sendPlayers(msg.New(msg.Start, nil))
+		return err
+	}
 
 	return nil
 }

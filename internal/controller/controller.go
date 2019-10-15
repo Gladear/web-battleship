@@ -5,7 +5,7 @@ import (
 	"web-battleship/internal/msg"
 )
 
-var games = make(map[string]Game)
+var games = make(map[string]*Game)
 
 func handleCreate(player Player) *Game {
 	game := newGame()
@@ -17,7 +17,7 @@ func handleCreate(player Player) *Game {
 
 	player.Send(msg.New(msg.Ack, hash))
 
-	return &game
+	return game
 }
 
 func handleJoin(player Player, payload json.RawMessage) *Game {
@@ -37,7 +37,7 @@ func handleJoin(player Player, payload json.RawMessage) *Game {
 	player.Send(msg.New(msg.Ack, nil))
 	game.addPlayer(player)
 
-	return &game
+	return game
 }
 
 // HandlePlayer adds a player to the game
@@ -70,6 +70,8 @@ func HandlePlayer(player Player) error {
 			game = handleJoin(player, message.Payload)
 		case msg.Ready:
 			err = game.handleReady(player, message.Payload)
+		case msg.Fire:
+			err = game.handleFire(player, message.Payload)
 		}
 
 		if err != nil {

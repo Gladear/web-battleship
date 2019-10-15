@@ -5,6 +5,10 @@ const dtf = new Intl.DateTimeFormat(undefined, {
   second: '2-digit',
 });
 
+export const ws = new WebSocket(`ws://${location.host}/endpoint`);
+
+ws.onclose = () => log('connection closed');
+
 export function log(...messages) {
   const [main, ...sub] = messages;
 
@@ -20,11 +24,9 @@ export function log(...messages) {
   );
 }
 
-export function makeSend(ws) {
-  return msg => {
-    log('sending message', msg);
-    ws.send(JSON.stringify(msg));
-  };
+export function send(msg) {
+  log('sending message', msg);
+  ws.send(JSON.stringify(msg));
 }
 
 export async function sleep(millis) {

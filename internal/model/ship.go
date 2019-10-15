@@ -1,33 +1,5 @@
 package model
 
-// The Orientation represents whether the ship
-// is placed horizontally or vertically
-type Orientation int
-
-// The orientation of a ship
-const (
-	Horizontal Orientation = iota
-	Vertical
-)
-
-// A Position is the location of the ship on the board,
-// as well as its orientation
-type Position struct {
-	X, Y        int
-	Orientation Orientation
-}
-
-// Equals checks that both positions are equal
-func (pos Position) Equals(other Position) bool {
-	if pos == other {
-		return true
-	}
-
-	return pos.X == other.X &&
-		pos.Y == other.Y &&
-		pos.Orientation == other.Orientation
-}
-
 // ShipType is the model of the ship
 // It contains its length and its name
 type ShipType struct {
@@ -59,4 +31,20 @@ func (ship Ship) Equals(other Ship) bool {
 
 	return ship.Type.Equals(*other.Type) &&
 		ship.Position.Equals(other.Position)
+}
+
+// MatchLocation checks if a case of the ship is at a location
+func (ship Ship) MatchLocation(location Location) bool {
+	pos := ship.Position
+	loc := pos.Location
+
+	if pos.Orientation == Horizontal {
+		return location.Y == loc.Y &&
+			location.X >= loc.X &&
+			location.X < loc.X+ship.Type.Length
+	}
+
+	return location.X == loc.X &&
+		location.Y >= loc.Y &&
+		location.Y < loc.Y+ship.Type.Length
 }

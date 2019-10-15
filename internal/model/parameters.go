@@ -41,9 +41,10 @@ func (params *Parameters) fitShips(ships []Ship) bool {
 
 	for _, ship := range ships {
 		pos := ship.Position
-		maxX, maxY := pos.X, pos.Y
+		loc := pos.Location
+		maxX, maxY := loc.X, loc.Y
 
-		if pos.X < 1 || pos.Y < 1 {
+		if loc.X < 0 || loc.Y < 0 {
 			return false
 		}
 
@@ -54,20 +55,12 @@ func (params *Parameters) fitShips(ships []Ship) bool {
 			maxY += ship.Type.Length
 		}
 
-		if maxX > width || maxY > height {
+		if maxX >= width || maxY >= height {
 			return false
 		}
 	}
 
 	return true
-}
-
-func getNextPos(x, y int, orientation Orientation) (int, int) {
-	if orientation == Horizontal {
-		return x + 1, y
-	}
-
-	return x, y + 1
 }
 
 func (params *Parameters) checkShipsOverlaps(ships []Ship) bool {
@@ -81,16 +74,14 @@ func (params *Parameters) checkShipsOverlaps(ships []Ship) bool {
 		pos := ship.Position
 		length := ship.Type.Length
 
-		x, y := pos.X, pos.Y
-
 		for i := 0; i < length; i++ {
-			x, y = getNextPos(x, y, pos.Orientation)
-
-			if grid[x][y] {
+			if grid[pos.Location.X][pos.Location.Y] {
 				return false
 			}
 
-			grid[x][y] = true
+			grid[pos.Location.X][pos.Location.Y] = true
+
+			pos = pos.Next()
 		}
 	}
 
@@ -104,8 +95,12 @@ func generateParameters() Parameters {
 		Ships: []ShipType{
 			ShipType{"Carrier", 5},
 			ShipType{"Battleship", 4},
+			ShipType{"Battleship", 4},
+			ShipType{"Cruiser", 3},
 			ShipType{"Cruiser", 3},
 			ShipType{"Submarine", 3},
+			ShipType{"Patrol Boat", 2},
+			ShipType{"Patrol Boat", 2},
 			ShipType{"Patrol Boat", 2},
 		},
 	}
