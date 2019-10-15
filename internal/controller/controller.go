@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"encoding/json"
 	"web-battleship/internal/msg"
 )
@@ -15,6 +16,7 @@ func handleCreate(player Player) *Game {
 
 	games[hash] = game
 
+	log.Printf("Game created with ID %v", hash)
 	player.Send(msg.New(msg.Ack, hash))
 
 	return game
