@@ -1,27 +1,34 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <title>Page d'acceuil</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="script.js"></script>
-  </head>
-  <body>
-    <h1> Bataille Navale<br /> </h1>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Language" content="fr" />
+        <link rel="stylesheet" href="./src/style/style.css" />
+        <title>Battleship - Home</title>
+    </head>
+    <body>
+        <h1 id="game_title">Battleship</h1>
 
-    <div id="corps_menu" align="center">
-      <a href="/play?player=1">
-        <input class="bouton_menu" type="button" value="Jouer" />
-      </a>
-      <br />
 
-      <a href="/rules" target="_blank">
-        <input class="bouton_menu" type="button" value="Règles" />
-        <br />
-      </a>
+        <div id="menu">
+            
+            <a href="./play.html?player=1">
+                <input class="menu_button" type="button" value="Create Game" />
+            </a>
+            <br/>
+            
+            <a href="./join_game.html">
+                <input class="menu_button" type="button" value="Join Game" />
+            </a>
+            <br/>
 
-      <!-- <input class="bouton_menu" type="button" value="Quitter" />
-      <br /> -->
-    </div>
-  </body>
+            <a href="./rules.html">
+                <input class="menu_button" type="button" value="Rules" />
+            </a>
+            <br/>
+            
+            <!-- <input class="bouton_menu" type="button" value="Quitter" />
+            <br /> -->
+        </div>
+    </body>
 </html>

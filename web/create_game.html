@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="Content-Language" content="fr" />
+        <link rel="stylesheet" href="./src/style/style.css" />
+        <title>Battleship - Join</title>
+    </head>
+    <body>
+        <h1 id="game_title">Create a game</h1>
+
+
+        <div id="menu">
+            
+            <h2>Click <strong>Create</strong> to generated a custom hash to send to your friend</h2>
+            
+            <input type="text" id="hash" placeholder="Custom Hash" readonly="true">
+            
+            <input class="menu_button" type="button" value="Create" id="button_create">
+            <input class="menu_button" type="button" value="Join" id="button_join" style="display: none">
+
+        </div>
+    </body>
+    
+    <script src="./src/controler/create.js"></script>
+    <script src="./src/controler/function.js"></script>
+    
+</html>

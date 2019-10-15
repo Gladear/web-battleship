@@ -5,6 +5,10 @@ class Board {
         this.players = players;
         this.selectedX = 1;
         this.selectedY = 0;
+        this.fireX = 1;
+        this.fireY = 0;
+        this.fireOwn = [];
+        this.fireEnemy = [];
     }
     
     getGrid(){
@@ -44,6 +48,12 @@ class Board {
         
         //Display the selected case
         this.drawCase();
+        
+        //Display the selected fire case
+        this.drawFireCase();
+        
+        //Display already fired cases
+        this.drawFire();
     }
     
     clearBoard(){
@@ -108,11 +118,30 @@ class Board {
         this.selectedY = selectedY;
     }
     
+    setFireCoord(){
+        this.fireX = this.selectedX;
+        this.fireY = this.selectedY;
+    }
+    
+    drawBoardCase(x,y,c1,c2){
+            
+        advCtx.setParams(x*gridCaseLength,y*gridCaseLength,1,0);
+
+        var cStrokeColor = "rgba(186, 68, 46, 0.74)";
+        var cFillColor = "rgba(204, 92, 58, 0.49)";
+
+        advCtx.begin(3,c1,c2);
+
+        advCtx.fillRect(0,0,gridCaseLength,gridCaseLength);
+        advCtx.rect(0,0,gridCaseLength,gridCaseLength);
+
+        advCtx.stroke();
+        
+    }
+    
     drawCase(){
         
         if((!this.selectedX && !this.selectedY) || (this.selectedX && this.selectedX<11 && this.selectedY && this.selectedY<11)){
-            
-            advCtx.setParams(this.selectedX*gridCaseLength,this.selectedY*gridCaseLength,1,0);
 
             var cStrokeColor;
             var cFillColor;
@@ -125,22 +154,60 @@ class Board {
                 cFillColor = "rgba(204, 193, 58, 0.49)";
             }
             
-            advCtx.begin(3,cStrokeColor,cFillColor);
-
-            advCtx.fillRect(0,0,gridCaseLength,gridCaseLength);
-            advCtx.rect(0,0,gridCaseLength,gridCaseLength);
-
-            advCtx.stroke();
+            this.drawBoardCase(this.selectedX,this.selectedY,cStrokeColor,cFillColor);
             
         }
         
     }
     
+    resetFireCase(){
+        this.fireX = 0;
+        this.fireY = 1;
+    }
+    
+    drawFireCase(){
+        
+        if(!displayOwnView && !placementPhase && this.fireX && this.fireX<11 && this.fireY && this.fireY<11){
+            
+            var cStrokeColor = "rgba(186, 68, 46, 0.74)";
+            var cFillColor = "rgba(204, 92, 58, 0.49)";
+            
+            this.drawBoardCase(this.fireX,this.fireY,cStrokeColor,cFillColor);
+            
+        }
+        
+    }
+    
+    drawFire(){
+        
+        var cStrokeColor = "rgba(186, 127, 46, 0.74)";
+        var cFillColor = "rgba(204, 170, 58, 0.49)";
+        
+        if(displayOwnView){
+            this.fireOwn.forEach(function(pos){
+               board.drawBoardCase(pos.x,pos.y,cStrokeColor,cFillColor); 
+            });
+        } else {
+            this.fireEnemy.forEach(function(pos){
+               board.drawBoardCase(pos.x,pos.y,cStrokeColor,cFillColor); 
+            });
+        }
+    }
+    
     drawSwitchButton(){
+        
+        var cStroke = "#000000";
+        var cFill;
+        
+        if(displayOwnView){
+            cFill = "#6c6969";
+        } else {
+            cFill = "#c73a3a";
+        }
         
         advCtx.setParams(gridCaseLength/2,gridCaseHeight/2,gridCaseLength/15,0);
         
-        advCtx.begin(1,"#000000","#6c6969");
+        advCtx.begin(1,cStroke,cFill);
         
         advCtx.moveTo(2.5,-3.5);
         advCtx.lineTo(2.5,-.5);
@@ -154,7 +221,7 @@ class Board {
         advCtx.fill();
         advCtx.stroke();
         
-        advCtx.begin(1,"#000000","#6c6969");
+        advCtx.begin(1,cStroke,cFill);
         
         advCtx.moveTo(-2.5,3.5);
         advCtx.lineTo(-2.5,.5);
@@ -247,6 +314,24 @@ class Board {
         });
         
         return this.typeDel;
+    }
+    
+    addPosEnemy(pos){
+        this.fireEnemy.push(pos);
+    }
+    
+    addPosOwn(pos){
+        this.fireOwn.push(pos);
+    }
+    
+    firePositionValid(){
+        var valid = true
+        
+        this.fireEnemy.forEach(function(pos){
+            if(pos.x == this.fireX && pos.y == this.fireY) valid = false;
+        });
+        
+        return valid;
     }
     
 }
