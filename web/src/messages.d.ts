@@ -46,6 +46,7 @@ type CustomError =
 interface ReceivedMessages {
   "ack": null,
   "error": CustomError,
+  "create": string,
   "start": null,
   "fire": FireMessage,
   "quit": null,
