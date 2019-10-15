@@ -74,6 +74,8 @@ func HandlePlayer(player Player) error {
 			err = game.handleReady(player, message.Payload)
 		case msg.Fire:
 			err = game.handleFire(player, message.Payload)
+		case msg.Quit:
+			err = game.handleQuit(player)
 		}
 
 		if err != nil {

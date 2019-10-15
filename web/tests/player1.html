@@ -189,6 +189,13 @@
               },
             });
             break;
+          case 8:
+            // ack
+            log('test: quit');
+            send({
+              action: 'quit',
+            });
+            break;
         }
 
         step++;
