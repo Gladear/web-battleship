@@ -8,10 +8,11 @@ const (
 	Ack        Action = "ack"
 	Error      Action = "error"
 
-	Ready Action = "ready"
-	Start Action = "start"
-	Fire  Action = "fire"
-	Quit  Action = "quit"
+	Parameters Action = "parameters"
+	Ready      Action = "ready"
+	Start      Action = "start"
+	Fire       Action = "fire"
+	Quit       Action = "quit"
 )
 
 // RequireConnected checks if the player must be connected to a battle

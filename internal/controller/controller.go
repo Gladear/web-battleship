@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"log"
 	"encoding/json"
+	"log"
 	"web-battleship/internal/msg"
 )
 
@@ -70,6 +70,8 @@ func HandlePlayer(player Player) error {
 			game = handleCreate(player)
 		case msg.Join:
 			game = handleJoin(player, message.Payload)
+		case msg.Parameters:
+			err = game.handleParameters(player, message.Payload)
 		case msg.Ready:
 			err = game.handleReady(player, message.Payload)
 		case msg.Fire:

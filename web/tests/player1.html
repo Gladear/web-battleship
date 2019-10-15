@@ -40,24 +40,8 @@
         },
         {
           position: {
-            x: 'a',
-            y: 6,
-            orientation: 'V',
-          },
-          type: 'Battleship',
-        },
-        {
-          position: {
             x: 'c',
             y: 3,
-            orientation: 'H',
-          },
-          type: 'Cruiser',
-        },
-        {
-          position: {
-            x: 'd',
-            y: 4,
             orientation: 'H',
           },
           type: 'Cruiser',
@@ -78,22 +62,6 @@
           },
           type: 'Patrol Boat',
         },
-        {
-          position: {
-            x: 'd',
-            y: 7,
-            orientation: 'H',
-          },
-          type: 'Patrol Boat',
-        },
-        {
-          position: {
-            x: 'd',
-            y: 8,
-            orientation: 'H',
-          },
-          type: 'Patrol Boat',
-        },
       ];
 
       let step = 0;
@@ -109,15 +77,32 @@
         log('received message: ', message);
 
         switch (step) {
-          // Game was created
           case 0:
+            log('test: modify parameters');
+            send({
+              action: 'parameters',
+              payload: {
+                width: 12,
+                height: 12,
+                ships: [
+                  { name: 'Carrier', length: 5, count: 1 },
+                  { name: 'Battleship', length: 4, count: 1 },
+                  { name: 'Cruiser', length: 3, count: 1 },
+                  { name: 'Submarine', length: 3, count: 1 },
+                  { name: 'Patrol Boat', length: 2, count: 1 },
+                ]
+              }
+            });
+            break;
+          case 1:
+            // ack
             log('test: send wrong ready message (missing ships)');
             send({
               action: 'ready',
               payload: ships.slice(1),
             });
             break;
-          case 1:
+          case 2:
             log('test: send wrong ready message (out of bounds position)');
             send({
               action: 'ready',
@@ -127,14 +112,14 @@
                   position: {
                     x: 'b',
                     y: 11,
-                    orientation: 'H',
+                    orientation: 'V',
                   },
                 },
                 ...ships.slice(1),
               ],
             });
             break;
-          case 2:
+          case 3:
             log('test: send wrong ready message (ship overlaps)');
             send({
               action: 'ready',
@@ -151,17 +136,17 @@
               ],
             });
             break;
-          case 3:
+          case 4:
             log('test: send correct ready message');
             send({
               action: 'ready',
               payload: ships,
             });
             break;
-          case 4:
+          case 5:
             // ack
             break;
-          case 5:
+          case 6:
             // start
             // Wait while other player tries to shoot
             await sleep(300);
@@ -175,10 +160,10 @@
               },
             });
             break;
-          case 6:
+          case 7:
             // ack
             break;
-          case 7:
+          case 8:
             // enemy fire
             log('test: whatever');
             send({
@@ -189,7 +174,7 @@
               },
             });
             break;
-          case 8:
+          case 9:
             // ack
             log('test: quit');
             send({
