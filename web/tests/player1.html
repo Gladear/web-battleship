@@ -24,7 +24,7 @@
       const ships = [
         {
           position: {
-            x: 'b',
+            x: 2,
             y: 2,
             orientation: 'H',
           },
@@ -32,7 +32,7 @@
         },
         {
           position: {
-            x: 'a',
+            x: 1,
             y: 1,
             orientation: 'V',
           },
@@ -40,7 +40,7 @@
         },
         {
           position: {
-            x: 'c',
+            x: 3,
             y: 3,
             orientation: 'H',
           },
@@ -48,7 +48,7 @@
         },
         {
           position: {
-            x: 'd',
+            x: 4,
             y: 5,
             orientation: 'H',
           },
@@ -56,7 +56,7 @@
         },
         {
           position: {
-            x: 'd',
+            x: 4,
             y: 6,
             orientation: 'H',
           },
@@ -110,7 +110,7 @@
                 {
                   ...ships[0],
                   position: {
-                    x: 'b',
+                    x: 2,
                     y: 11,
                     orientation: 'V',
                   },
@@ -127,7 +127,7 @@
                 {
                   ...ships[0],
                   position: {
-                    x: 'a',
+                    x: 1,
                     b: 4,
                     orientation: 'H',
                   },
@@ -155,7 +155,7 @@
             send({
               action: 'fire',
               payload: {
-                x: 'j',
+                x: 10,
                 y: 10,
               },
             });
@@ -169,7 +169,7 @@
             send({
               action: 'fire',
               payload: {
-                x: 'c',
+                x: 3,
                 y: 5,
               },
             });

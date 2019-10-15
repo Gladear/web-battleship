@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"encoding/json"
 	"web-battleship/internal/client"
-	"web-battleship/internal/msg"
 	"web-battleship/internal/msg"
 )
 
