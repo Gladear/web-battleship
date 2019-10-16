@@ -21,6 +21,9 @@ func HandlePlayer(player Player) error {
 		action := message.Action
 
 		if action == msg.Disconnect {
+			if err = game.handleDisconnect(player); err != nil {
+				panic(err)
+			}
 			break
 		}
 
@@ -40,8 +43,6 @@ func HandlePlayer(player Player) error {
 			err = game.handleReady(player, message.Payload)
 		case msg.Fire:
 			err = game.handleFire(player, message.Payload)
-		case msg.Quit:
-			err = game.handleQuit(player)
 		}
 
 		if err != nil {

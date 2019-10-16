@@ -12,6 +12,16 @@ type Game struct {
 	Ready   []*Player
 }
 
+func (game *Game) hasPlayer(player Player) bool {
+	for _, it := range game.Players {
+		if it == player {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (game *Game) addPlayer(player Player) {
 	game.Battle.AddPlayer(player)
 	game.Players = append(game.Players, player)

@@ -10,7 +10,7 @@ export async function ready(ships) {
 }
 
 export async function leave() {
-  await send({ action: 'quit' });
+  await send({ action: 'disconnect' });
   location.assign('/');
 }
 

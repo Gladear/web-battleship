@@ -45,5 +45,5 @@ export async function fireAt(location) {
 }
 
 window.addEventListener('beforeunload', () => {
-  send({ action: 'quit' });
+  send({ action: 'disconnect' });
 });
