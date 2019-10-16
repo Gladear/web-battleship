@@ -57,6 +57,20 @@ export function off(action, callback) {
 }
 
 /**
+ * Calls a callback for an action only once.
+ *
+ * @param {string} action
+ * @param {Function} callback
+ */
+export function once(action, callback) {
+  const callback = (...args) => {
+    resolve(...args);
+    off(action, callback);
+  };
+  on(action, callback);
+}
+
+/**
  * Returns a promise that resolves when the action is received.
  *
  * @param {string} action
@@ -64,11 +78,7 @@ export function off(action, callback) {
  */
 export async function waitFor(action) {
   return new Promise(resolve => {
-    const callback = (...args) => {
-      resolve(...args);
-      off(action, callback);
-    };
-    on(action, callback);
+    once(action, resolve);
   });
 }
 
