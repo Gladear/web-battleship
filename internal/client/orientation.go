@@ -8,7 +8,7 @@ import (
 // Orientation is the orientation as received from the client
 type Orientation string
 
-// ToModel convets the orientation to the model's position orientation
+// ToModel converts the orientation to the model's position orientation
 func (orientation Orientation) ToModel(battle model.Battle) model.Orientation {
 	if orientation == "H" {
 		return model.Horizontal

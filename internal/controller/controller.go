@@ -1,44 +1,10 @@
 package controller
 
 import (
-	"encoding/json"
 	"web-battleship/internal/msg"
 )
 
 var games = make(map[string]*Game)
-
-func handleCreate(player Player) *Game {
-	game := newGame()
-	game.addPlayer(player)
-
-	hash := generateHash()
-
-	games[hash] = game
-
-	player.Send(msg.New(msg.Ack, hash))
-
-	return game
-}
-
-func handleJoin(player Player, payload json.RawMessage) *Game {
-	var hash string
-
-	if err := json.Unmarshal(payload, &hash); err != nil {
-		panic(err)
-	}
-
-	game, exists := games[hash]
-
-	if !exists {
-		player.Send(msg.NewError(msg.UnexistingBattle))
-		return nil
-	}
-
-	player.Send(msg.New(msg.Ack, nil))
-	game.addPlayer(player)
-
-	return game
-}
 
 // HandlePlayer adds a player to the game
 func HandlePlayer(player Player) error {
@@ -68,10 +34,14 @@ func HandlePlayer(player Player) error {
 			game = handleCreate(player)
 		case msg.Join:
 			game = handleJoin(player, message.Payload)
+		case msg.Parameters:
+			err = game.handleParameters(player, message.Payload)
 		case msg.Ready:
 			err = game.handleReady(player, message.Payload)
 		case msg.Fire:
 			err = game.handleFire(player, message.Payload)
+		case msg.Quit:
+			err = game.handleQuit(player)
 		}
 
 		if err != nil {

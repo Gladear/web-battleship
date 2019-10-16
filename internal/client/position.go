@@ -3,11 +3,11 @@ package client
 import "web-battleship/internal/model"
 
 // Column is the X position as received from the client
-type Column string
+type Column int
 
 // ToModel converts the colmun to the model X position
 func (col Column) ToModel(battle model.Battle) int {
-	return int(col[0]) - int('a')
+	return int(col) - 1
 }
 
 // Row is the Y position as received from the client

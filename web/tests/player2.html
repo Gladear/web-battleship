@@ -23,7 +23,7 @@
     </code>
 
     <script type="module">
-      import { log, send, ws } from '../controler/debug.js';
+      import { log, send, ws } from '../src/controler/debug.js';
 
       const { join } = document.forms;
 
@@ -35,7 +35,7 @@
       const ships = [
         {
           position: {
-            x: 'b',
+            x: 2,
             y: 2,
             orientation: 'H',
           },
@@ -43,7 +43,7 @@
         },
         {
           position: {
-            x: 'a',
+            x: 1,
             y: 1,
             orientation: 'V',
           },
@@ -51,15 +51,7 @@
         },
         {
           position: {
-            x: 'a',
-            y: 6,
-            orientation: 'V',
-          },
-          type: 'Battleship',
-        },
-        {
-          position: {
-            x: 'c',
+            x: 3,
             y: 3,
             orientation: 'H',
           },
@@ -67,15 +59,7 @@
         },
         {
           position: {
-            x: 'd',
-            y: 4,
-            orientation: 'H',
-          },
-          type: 'Cruiser',
-        },
-        {
-          position: {
-            x: 'd',
+            x: 4,
             y: 5,
             orientation: 'H',
           },
@@ -83,24 +67,8 @@
         },
         {
           position: {
-            x: 'd',
+            x: 4,
             y: 6,
-            orientation: 'H',
-          },
-          type: 'Patrol Boat',
-        },
-        {
-          position: {
-            x: 'd',
-            y: 7,
-            orientation: 'H',
-          },
-          type: 'Patrol Boat',
-        },
-        {
-          position: {
-            x: 'd',
-            y: 8,
             orientation: 'H',
           },
           type: 'Patrol Boat',
@@ -135,7 +103,7 @@
             send({
               action: 'fire',
               payload: {
-                x: 'a',
+                x: 1,
                 y: 1,
               },
             });
@@ -149,8 +117,8 @@
             send({
               action: 'fire',
               payload: {
-                x: 'd',
-                y: 8,
+                x: 4,
+                y: 6,
               },
             });
           case 5:
@@ -162,8 +130,8 @@
             send({
               action: 'fire',
               payload: {
-                x: 'e',
-                y: 8,
+                x: 5,
+                y: 6,
               },
             });
             break;
