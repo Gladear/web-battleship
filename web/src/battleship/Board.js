@@ -14,6 +14,7 @@ import {
   gameLineNumber,
   boardColor,
   advCtx,
+  board,
 } from './Game.js';
 
 export class Board {

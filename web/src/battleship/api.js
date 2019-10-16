@@ -1,37 +1,12 @@
-export function onFire(pos){
-
-    //Triggerd when recieving a fire from the server
-    var newPos = {x:payload.x,y:payload.y};
-
-    if(turn == playerNumber){
-        //Player is the one who fired
-        board.addPosEnemy(newPos);
-        board.resetFireCase();
-        if(true){
-            board.addEnemyDamage(newPos);
-        }
-    } else {
-        //Player is the one who got fired at
-        board.addPosOwn(newPos);
-        if(true){
-            board.addOwnDamage(newPos);
-        }
-    }
-
-    //Update the UI
-
-
-
-
+function onParamater(parameters){  
+    initParamaters(parameters);  
 }
 
-export function onSwtichTurn(){
-    turn = turn==1 ? 2 : 1;
-    updateUIFire();
+function sendReady(){
+    if(gameReady()) ready(ships);
 }
 
-export function onMessageStart(){
-
+function onReady(){
     //Triggerd when both players are ready
     //The game can switch from placement to fire phase
 
@@ -39,10 +14,54 @@ export function onMessageStart(){
 
 }
 
-export function sendReady(){
-
+function sendQuit(){
+    //Triggerd when quitting the game
+    
 }
 
-export function sendFire(){
+function onQuit(){
+    //Triggerd when the enemy quits the game
+    
+}
+
+function async sendFire(){
+    //Triggerd when sending a fire to the server
+    
+    if(isPlayerTurn() && board.firePositionValid()){
+        
+        var pos = {x:board.fireX,y:board.fireY};
+        
+        try {
+            var hit = await fire(pos)
+        } catch {
+            return 0;
+        }
+
+        //Player is the one who fired
+        board.addPosEnemy(pos);
+        board.resetFireCase();
+        if(hit){
+            board.addEnemyDamage(pos);
+        }
+
+        updateUIFire();
+    }    
+        
+}
+
+function onFire(pos,hit){
+    //Triggerd when recieving a fire from the server
+    //Player is the one who got fired at
+    board.addPosOwn(pos);
+    
+    if(hit){
+        board.addOwnDamage(pos);
+    }
+ 
+    updateUIFire();
+}
+
+function onEnd(win){
+    //Triggerd when winning the game
 
 }

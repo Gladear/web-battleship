@@ -1,4 +1,10 @@
-import {advCtx} from "./Game.js"
+import {
+    advCtx,
+    t,
+    gridCaseLength,
+    gridCaseHeight,
+    Sh_ips,
+} from "./Game.js"
 
 export class Ship {
     constructor(x, y, type, rotation) {
@@ -78,7 +84,7 @@ export class Ship {
             var offsetSwimY = Math.sin(this.offsetSwimDirection*(t+this.offsetSwim)/(1+this.offsetSwimSpeed)-.5)*(1+this.offsetSwimWidth);
 
             advCtx.setParams(gridCaseLength*(this.x+.5)+offsetSwimX,gridCaseHeight*(this.y+.5)+offsetSwimY,gridCaseLength/5*rot2,rot);
-            switch(this.type){
+            switch(parseInt(this.type,10)){
                 case 0: //Submarine
                     this.drawSubmarine();
                     break;
@@ -142,35 +148,17 @@ export class Ship {
 
     drawSubmarine(){
 
-        if(hitboxes){
-            advCtx.begin(2,hitboxColor);
-            advCtx.rect(-2.5,-2.5,15,5);
-            advCtx.stroke();
-        }
-
         Sh_ips.drawSubmarine(advCtx);
 
     }
 
     drawCarrier(){
 
-        if(hitboxes){
-            advCtx.begin(2,hitboxColor);
-            advCtx.rect(-2.5,-2.5,30,5);
-            advCtx.stroke();
-        }
-
         Sh_ips.drawCarrier(advCtx);
 
     }
 
     drawBattleship(){
-
-        if(hitboxes){
-            advCtx.begin(2,hitboxColor);
-            advCtx.rect(-2.5,-2.5,20,5);
-            advCtx.stroke();
-        }
 
         Sh_ips.drawBattleship(advCtx);
 
@@ -181,23 +169,11 @@ export class Ship {
 
     drawPatrolBoat(){
 
-        if(hitboxes){
-            advCtx.begin(2,hitboxColor);
-            advCtx.rect(-2.5,-2.5,10,5);
-            advCtx.stroke();
-        }
-
         Sh_ips.drawPatrolBoat(advCtx);
 
     }
 
     drawDestroyer(){
-
-        if(hitboxes){
-            advCtx.begin(2,hitboxColor);
-            advCtx.rect(-2.5,-2.5,15,5);
-            advCtx.stroke();
-        }
 
         Sh_ips.drawDestroyer(advCtx);
 
