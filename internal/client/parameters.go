@@ -2,13 +2,15 @@ package client
 
 import "web-battleship/internal/model"
 
-type shipType struct {
-	Name   string
-	Length int
-	Count  int
+// ShipParameter is the parameters of a ship as communicated with the client
+type ShipParameter struct {
+	Name   string `json:"name"`
+	Length int    `json:"length"`
+	Count  int    `json:"count"`
 }
 
-func (shipType shipType) ToModel(battle model.Battle) model.ShipType {
+// ToModel converts the ship parameter to one understood by the model
+func (shipType ShipParameter) ToModel(battle model.Battle) model.ShipType {
 	return model.ShipType{
 		Name:   shipType.Name,
 		Length: shipType.Length,
@@ -19,7 +21,7 @@ func (shipType shipType) ToModel(battle model.Battle) model.ShipType {
 type Parameters struct {
 	Width  int
 	Height int
-	Ships  []shipType
+	Ships  []ShipParameter
 }
 
 // ToModel converts the client parameters to parameters of the model
