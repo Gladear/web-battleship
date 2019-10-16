@@ -1,14 +1,14 @@
 // "parameters"
-interface ShipType {
+interface ShipParameters {
   name: string,
   length: number,
   count: number,
 }
 
-interface Parameters {
+interface GameParameters {
   width: number,
   height: number,
-  ships: ShipType[],
+  ships: ShipParameters[],
 }
 
 // "join"
@@ -43,7 +43,7 @@ interface FireMessage {
 
 interface SentMessages {
   "create": null,
-  "parameters": Parameters,
+  "parameters": GameParameters,
   "join": BattleID,
   "ready": Ship[],
   "fire": Location,
@@ -61,7 +61,7 @@ interface ReceivedMessages {
   "ack": null,
   "error": CustomError,
   "create": string,
-  "parameters": Parameters,
+  "parameters": GameParameters,
   "start": null,
   "fire": FireMessage,
   "disconnect": null,
