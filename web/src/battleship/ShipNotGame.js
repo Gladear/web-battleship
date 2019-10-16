@@ -3,11 +3,11 @@ var boatStrokeColor = "#414141";
 var boatFillColor = "#b1aeae";
 var hitboxColor = "#ff1e1e";
 
-class ShipNotGame {
+export class ShipNotGame {
     constructor() {
     }
-    
-    draw(type,rotation,x,y,l,pctx){           
+
+    draw(type,rotation,x,y,l,pctx){
 
         pctx.setParams(x,y,l,rotation);
         switch(type){
@@ -27,11 +27,11 @@ class ShipNotGame {
                 this.drawDestroyer(pctx);
                 break;
         }
-        
+
     }
-    
+
     drawSubmarine(pctx){
-        
+
         if(hitboxes){
             pctx.begin(2,hitboxColor);
             pctx.rect(-2.5,-2.5,15,5);
@@ -68,7 +68,7 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
         pctx.begin(1,boatStrokeColor,boatFillColor);
 
         pctx.moveTo(-0.25,0.25);
@@ -79,7 +79,7 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
         pctx.begin(1,boatStrokeColor,"#5cbbde");
 
         pctx.moveTo(-0.25,0.25);
@@ -91,15 +91,15 @@ class ShipNotGame {
         pctx.fill();
         pctx.stroke();
     }
-    
+
     drawCarrier(pctx){
-        
+
         if(hitboxes){
             pctx.begin(2,hitboxColor);
             pctx.rect(-2.5,-2.5,30,5);
             pctx.stroke();
         }
-        
+
         pctx.begin(2,"#000000","#000000");
 
         pctx.moveTo(2,1.75);
@@ -109,7 +109,7 @@ class ShipNotGame {
         pctx.lineTo(.5,1.60);
 
         pctx.stroke();
-        
+
         pctx.begin(2,boatStrokeColor,boatFillColor);
 
         pctx.moveTo(.5,-.5);
@@ -124,7 +124,7 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
         pctx.begin(2,boatStrokeColor,boatFillColor);
 
         pctx.moveTo(-1.5,-.5);
@@ -145,17 +145,17 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
     }
-                
+
     drawBattleship(pctx){
-        
+
         if(hitboxes){
             pctx.begin(2,hitboxColor);
             pctx.rect(-2.5,-2.5,20,5);
             pctx.stroke();
         }
-        
+
         pctx.begin(2,boatStrokeColor,boatFillColor);
 
         pctx.moveTo(1.5,-.5);
@@ -184,7 +184,7 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
         pctx.begin(2,boatStrokeColor,boatFillColor);
 
         pctx.moveTo(-1.5,-.5);
@@ -205,17 +205,17 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
     }
-    
+
     drawPatrolBoat(pctx){
-        
+
         if(hitboxes){
             pctx.begin(2,hitboxColor);
             pctx.rect(-2.5,-2.5,10,5);
             pctx.stroke();
         }
-        
+
         pctx.begin(2,boatStrokeColor,boatFillColor);
 
         pctx.moveTo(1.5,0);
@@ -228,7 +228,7 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
         pctx.begin(2,boatStrokeColor,boatFillColor);
 
         pctx.moveTo(-2.5,0);
@@ -242,17 +242,17 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
     }
-    
+
     drawDestroyer(pctx){
-        
+
         if(hitboxes){
             pctx.begin(2,hitboxColor);
             pctx.rect(-2.5,-2.5,15,5);
             pctx.stroke();
         }
-        
+
         pctx.begin(2,boatStrokeColor,boatFillColor);
 
         pctx.moveTo(-.5,0);
@@ -271,7 +271,7 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
         pctx.begin(2,boatStrokeColor,boatFillColor);
 
         pctx.moveTo(.5,0);
@@ -286,7 +286,7 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
         pctx.begin(2,boatStrokeColor,boatFillColor);
 
         pctx.moveTo(-2,0);
@@ -302,7 +302,7 @@ class ShipNotGame {
 
         pctx.fill();
         pctx.stroke();
-        
+
     }
-    
+
 }

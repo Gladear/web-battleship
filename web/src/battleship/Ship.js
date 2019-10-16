@@ -1,4 +1,6 @@
-class Ship {
+import {advCtx} from "./Game.js"
+
+export class Ship {
     constructor(x, y, type, rotation) {
         this.x = x;
         this.y = y;
@@ -11,48 +13,48 @@ class Ship {
         this.damage = [];
         this.damageCount = 0;
     }
-    
+
     getX() {
         return this.x;
     }
-    
+
     setX(x) {
         this.x = x;
     }
-    
+
     getY() {
         return this.y;
     }
-    
+
     setY(y) {
         this.y = y;
     }
-    
+
     getType() {
         return this.ctx;
     }
-    
+
     setType(type) {
         this.type = type;
     }
-    
+
     getRotation() {
         return this.rotation;
     }
-    
+
     setRotation(rotation) {
         this.rotation = rotation;
     }
-    
+
     addDamage(i){
         this.damageCount++;
         this.damage.push(i);
     }
-    
+
     draw(own){
-        
+
         if(own){
-            
+
             var rot;
             var rot2 = 1;
 
@@ -63,7 +65,7 @@ class Ship {
                 case 1:
                     rot = 90;
                     break;
-                case 2: 
+                case 2:
                     rot = 0;
                     rot2 = -1
                     break;
@@ -71,7 +73,7 @@ class Ship {
                     rot = -90;
                     break;
             }
-            
+
             var offsetSwimX = Math.cos(this.offsetSwimDirection*(t+this.offsetSwim)/(1+this.offsetSwimSpeed))*(1+this.offsetSwimWidth);
             var offsetSwimY = Math.sin(this.offsetSwimDirection*(t+this.offsetSwim)/(1+this.offsetSwimSpeed)-.5)*(1+this.offsetSwimWidth);
 
@@ -93,14 +95,14 @@ class Ship {
                     this.drawDestroyer();
                     break;
             }
-            
+
             var ship_ = this;
-            
+
             this.damage.forEach(function(d){
-                
+
                 var xx;
                 var yy;
-                
+
                 switch(ship_.rotation){
                     case 0:
                         xx = gridCaseLength*(ship_.x+d+.5)+offsetSwimX;
@@ -111,35 +113,35 @@ class Ship {
                         yy = gridCaseHeight*(ship_.y+d+.5)+offsetSwimY;
                         break;
                 }
-                
+
                 advCtx.setParams(xx,yy,gridCaseLength/5*rot2,rot);
                 Damage.draw(advCtx);
             });
-            
-            
+
+
         } else {
-            
+
             var offsetSwimX = Math.cos(this.offsetSwimDirection*(t+this.offsetSwim)/(1+this.offsetSwimSpeed))*(1+this.offsetSwimWidth);
             var offsetSwimY = Math.sin(this.offsetSwimDirection*(t+this.offsetSwim)/(1+this.offsetSwimSpeed)-.5)*(1+this.offsetSwimWidth);
-            
+
             this.damage.forEach(function(d){
-                
+
                 var xx;
                 var yy;
-                
+
                 xx = gridCaseLength*(d.x+.5)+offsetSwimX;
                 yy = gridCaseHeight*(d.y+.5)+offsetSwimY;
-                
+
                 advCtx.setParams(xx,yy,gridCaseLength/5,0);
                 Damage.draw(advCtx);
             });
-            
-        }     
-        
+
+        }
+
     }
-    
+
     drawSubmarine(){
-        
+
         if(hitboxes){
             advCtx.begin(2,hitboxColor);
             advCtx.rect(-2.5,-2.5,15,5);
@@ -147,65 +149,65 @@ class Ship {
         }
 
         Sh_ips.drawSubmarine(advCtx);
-        
+
     }
-    
+
     drawCarrier(){
-        
+
         if(hitboxes){
             advCtx.begin(2,hitboxColor);
             advCtx.rect(-2.5,-2.5,30,5);
             advCtx.stroke();
         }
-        
+
         Sh_ips.drawCarrier(advCtx);
-        
+
     }
-                
+
     drawBattleship(){
-        
+
         if(hitboxes){
             advCtx.begin(2,hitboxColor);
             advCtx.rect(-2.5,-2.5,20,5);
             advCtx.stroke();
         }
-        
+
         Sh_ips.drawBattleship(advCtx);
 
         advCtx.fill();
         advCtx.stroke();
-        
+
     }
-    
+
     drawPatrolBoat(){
-        
+
         if(hitboxes){
             advCtx.begin(2,hitboxColor);
             advCtx.rect(-2.5,-2.5,10,5);
             advCtx.stroke();
         }
-        
+
         Sh_ips.drawPatrolBoat(advCtx);
-        
+
     }
-    
+
     drawDestroyer(){
-        
+
         if(hitboxes){
             advCtx.begin(2,hitboxColor);
             advCtx.rect(-2.5,-2.5,15,5);
             advCtx.stroke();
         }
-        
+
         Sh_ips.drawDestroyer(advCtx);
-        
+
     }
-    
+
     getPositions(){
-        
+
         var lenShip;
         var pos = [];
-        
+
         switch(this.type){
             case 0:
                 lenShip = 3;
@@ -223,31 +225,31 @@ class Ship {
                 lenShip = 3;
                 break;
         }
-        
+
         if(this.rotation){
             for(var i=0;i<lenShip;i++){
                 var p = {x: this.x, y: this.y+i};
                 pos.push(p);
-            } 
+            }
         } else {
             for(var i=0;i<lenShip;i++){
                 var p = {x: this.x+i, y: this.y};
                 pos.push(p);
-            } 
+            }
         }
-        
+
         return pos;
     }
-    
+
     equal(ship){
-        
+
         if(this.x != ship.x) return false;
         if(this.y != ship.y) return false;
         if(this.type != ship.type) return false;
         if(this.rotation != ship.rotation) return false;
-        
+
         return true;
-        
+
     }
-    
+
 }

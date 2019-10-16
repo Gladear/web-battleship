@@ -1,8 +1,8 @@
-function onFire(pos){
-    
+export function onFire(pos){
+
     //Triggerd when recieving a fire from the server
-    var newPos = {x:payload.x,y:payload.y}; 
-    
+    var newPos = {x:payload.x,y:payload.y};
+
     if(turn == playerNumber){
         //Player is the one who fired
         board.addPosEnemy(newPos);
@@ -17,32 +17,32 @@ function onFire(pos){
             board.addOwnDamage(newPos);
         }
     }
-    
+
     //Update the UI
-    
-    
-    
-    
+
+
+
+
 }
 
-function onSwtichTurn(){
+export function onSwtichTurn(){
     turn = turn==1 ? 2 : 1;
     updateUIFire();
 }
 
-function onMessageStart(){
-    
+export function onMessageStart(){
+
     //Triggerd when both players are ready
     //The game can switch from placement to fire phase
-    
+
     updateUI();
-    
+
 }
 
-function sendReady(){
-    
+export function sendReady(){
+
 }
 
-function sendFire(){
-    
+export function sendFire(){
+
 }

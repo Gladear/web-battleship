@@ -1,14 +1,14 @@
-class BoatDefinition{
-    
+export class BoatDefinition{
+
     constructor() {
     }
-    
+
     getBoat(t){
-        
+
         var name;
         var len;
         var sn;
-        
+
         switch(t){
             case 0:
                 name = "Submarine";
@@ -36,8 +36,8 @@ class BoatDefinition{
                 sn = "cruC";
                 break;
         }
-        
+
         return {n:name,l:len,sn:sn};
-        
+
     }
 }
