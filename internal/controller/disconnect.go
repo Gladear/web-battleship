@@ -19,5 +19,5 @@ func (game *Game) handleDisconnect(player Player) error {
 		}
 	}
 
-	return enemy.Send(msg.New(msg.Disconnect, nil))
+	return enemy.Send(msg.New(msg.End, true))
 }
