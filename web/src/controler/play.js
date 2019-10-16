@@ -8,7 +8,7 @@ if (!gameID) {
   location.assign('/');
 }
 
-send({ action: 'join', payload: gameID });
+send({ action: 'join', payload: gameID })
 
 once('start', () => {
   onStart();

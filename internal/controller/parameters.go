@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"encoding/json"
 	"web-battleship/internal/client"
 	"web-battleship/internal/msg"
@@ -14,6 +15,8 @@ func (game *Game) handleParameters(player Player, payload json.RawMessage) error
 	}
 
 	game.Battle.Params = parameters.ToModel(game.Battle)
+	log.Printf("Modified parameters: %v", game.Battle.Params)
+
 	player.Send(msg.New(msg.Ack, nil))
 
 	return nil
