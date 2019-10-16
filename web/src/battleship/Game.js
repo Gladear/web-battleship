@@ -1,9 +1,21 @@
+/*import {AdvancedCtx} from "./AdvancedCtx.js";
+import {Board} from "./Board.js";
+import {DamageNotGame} from "./DamageNotGame.js";
+import {Grid} from "./Grid.js";
+import {Player} from "./Player.js";
+import {Ship} from "./Ship.js";
+import {ShipNotGame} from "./ShipNotGame.js";
+
+import {$_GET} from "./Url.js";
+
+import {initGamePage} from "../controler/main.js"*/
+
 var canvas = document.getElementById("battleship_board");
 var context = canvas.getContext("2d");
 canvas.style.cursor = "crosshair";
 
-frameRate = 100;
-clockRate = 50;
+var frameRate = 100;
+var clockRate = 50;
 var d = new Date();
 var time = d.getMilliseconds();
 var newTime;
@@ -56,6 +68,9 @@ var boardColor = "#dd3030";
 var gridTxtLength = 30;
 
 var displayOwnView = true;
+var boatPointMax;
+var boatPoint;
+var boatDefinition;
 
 var advCtx;
 var grid;
@@ -73,6 +88,9 @@ var playerNumber;
 
 var windowXInit;
 var windowYInit;
+
+var ship_demo;
+var boats;
 
 function frame(){
     
@@ -95,6 +113,17 @@ function clock(){
 }
 
 function init(){
+    
+    boats = [{t:0,n:1},{t:1,n:1},{t:2,n:2},{t:3,n:3},{t:4,n:2}];
+    
+    ship_demo = new ShipNotGame();
+    boatDefinition = new BoatDefinition();
+    document.getElementById("subLeftTab").innerHTML = "";
+    document.getElementById("subLeftTab").appendChild(createBoatTab());
+    drawDemo();
+    
+    boatPointMax = 36;
+    boatPoint = 0;
 
     playerNumber = $_GET("player");
     Sh_ips = new ShipNotGame();
@@ -122,8 +151,6 @@ function init(){
 
         //Init Board
         board = new Board(grid,players);
-        
-        var ship_demo = new ShipNotGame();
 
         ship_demo.draw(0,0,18,40,10,subAC);
         ship_demo.draw(1,0,18,40,7,carAC);
@@ -133,6 +160,35 @@ function init(){
 
         clock();
     }
+}
+
+function drawDemo(){
+    
+    sub = document.getElementById("subC");
+    subC = sub.getContext("2d");
+    subAC = new AdvancedCtx(subC);
+
+    car = document.getElementById("carC");
+    carC = car.getContext("2d");
+    carAC = new AdvancedCtx(carC);
+
+    bat = document.getElementById("batC");
+    batC = bat.getContext("2d");
+    batAC = new AdvancedCtx(batC);
+
+    pat = document.getElementById("patC");
+    patC = pat.getContext("2d");
+    patAC = new AdvancedCtx(patC);
+    
+    cru = document.getElementById("cruC");
+    cruC = cru.getContext("2d");
+    cruAC = new AdvancedCtx(cruC);
+    
+    ship_demo.draw(0,0,18,40,10,subAC);
+    ship_demo.draw(1,0,18,40,7,carAC);
+    ship_demo.draw(2,0,18,40,10,batAC);
+    ship_demo.draw(3,0,18,40,10,patAC);
+    ship_demo.draw(4,0,18,40,10,cruAC);
 }
 
 function cursor(event){
@@ -151,12 +207,79 @@ function isPlayerTurn(){
     return !placementPhase && turn == playerNumber;
 }
 
+function createBoatTab(){
+    
+    var boatTab = document.createElement("div");
+    
+    var boatsDef = [];
+    
+    boats.forEach(function(boat){
+        var bd = {boat:boat,boatD:boatDefinition.getBoat(boat.t)};
+        boatsDef.push(bd);
+    });
+    
+    boatsDef.forEach(function(bdf){
+        
+        var btl = document.createElement("label");
+        btl.setAttribute("for","s"+(bdf.boat.t+1));
+        btl.setAttribute("id","s"+(bdf.boat.t+1)+"l");
+        
+        var can = document.createElement("canvas");
+        can.setAttribute("id",bdf.boatD.sn);
+        can.setAttribute("class","display_ships_tab");
+        
+        var na = document.createElement("span");
+        na.setAttribute("id","p"+(bdf.boat.t+1));
+        na.innerHTML = bdf.boatD.n;
+        
+        var inp = document.createElement("input");
+        inp.setAttribute("type","radio");
+        inp.setAttribute("id","s"+(bdf.boat.t+1));
+        inp.setAttribute("name","ship");
+        inp.setAttribute("value","s"+bdf.boat.t);
+        
+        var nb = document.createElement("span");
+        nb.setAttribute("id","n"+(bdf.boat.t+1));
+        nb.innerHTML = "x"+bdf.boat.n;
+        
+        btl.appendChild(can);
+        btl.appendChild(na);
+        btl.appendChild(inp);
+        btl.appendChild(nb);
+        
+        boatTab.appendChild(btl);
+        boatTab.appendChild(document.createElement("br"));
+    });
+    
+    return boatTab;
+    
+}
+
 function cursorClick(){
     
     
-    if(!board.selectedX && !board.selectedY){
+    if(!board.selectedX && !board.selectedY && !placementPhase){
+        
         //Switch the view
         displayOwnView = !displayOwnView;
+        
+        //Update Score view
+        var subLeftTab;
+        
+        if(displayOwnView){
+            
+            subLeftTab = createBoatTab();
+            
+        } else {
+           var score = boatPoint+" / "+boatPointMax;
+            
+            subLeftTab = document.createElement("p");
+            subLeftTab.innerHTML = score;
+        }
+        
+        document.getElementById("subLeftTab").innerHTML = "";
+        document.getElementById("subLeftTab").appendChild(subLeftTab);
+        
     }
     
     if(placementPhase){
@@ -302,16 +425,6 @@ function updateView(){
     }
 }
 
-function recieveFire(){
-    
-    //Recieve enemy fire
-    
-    
-    //Update the UI
-    turn = playerNumber;
-    updateUIFire();
-}
-
 function fire(){
     
     if(isPlayerTurn() && board.firePositionValid()){
@@ -319,17 +432,9 @@ function fire(){
         //Send to server
         
         
-        var newPos = {x:board.fireX,y:board.fireY}; 
-        board.addPosEnemy(newPos);
         
-        //Update the UI
-        turn = playerNumber==1 ? 2 : 1;
-        updateUIFire();
-        board.resetFireCase();
         
     }
-    
-    console.log("test");
     
 }
 
@@ -339,6 +444,7 @@ function gameReady(){
 
 function updateUI(){
     
+    //Update UI switching from placement to fire phase
     placementPhase = false;
     document.getElementById("button_ready").style.display = "none";
     document.getElementById("button_fire").style.display = "block";
@@ -348,6 +454,8 @@ function updateUI(){
     document.getElementById("o1l").style.display = "none";
     document.getElementById("o2l").style.display = "none";
     document.getElementById("s6l").style.display = "none";
+    
+    document.getElementById("leftTab").innerHTML= "Score";
     
     nbSubmarine = 1;
     nbCarrier = 1;

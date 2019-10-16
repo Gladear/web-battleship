@@ -9,6 +9,7 @@ class Ship {
         this.offsetSwimSpeed = Math.floor(Math.random() * 1000)/950;
         this.offsetSwimDirection = Math.floor(Math.random() * 2) ? 1 : -1;
         this.damage = [];
+        this.damageCount = 0;
     }
     
     getX() {
@@ -43,8 +44,9 @@ class Ship {
         this.rotation = rotation;
     }
     
-    addDamage(x,y){
-        
+    addDamage(i){
+        this.damageCount++;
+        this.damage.push(i);
     }
     
     draw(own){
@@ -92,9 +94,45 @@ class Ship {
                     break;
             }
             
-            //Damage.draw(advCtx);
+            var ship_ = this;
+            
+            this.damage.forEach(function(d){
+                
+                var xx;
+                var yy;
+                
+                switch(ship_.rotation){
+                    case 0:
+                        xx = gridCaseLength*(ship_.x+d+.5)+offsetSwimX;
+                        yy = gridCaseHeight*(ship_.y+.5)+offsetSwimY;
+                        break;
+                    case 1:
+                        xx = gridCaseLength*(ship_.x+.5)+offsetSwimX;
+                        yy = gridCaseHeight*(ship_.y+d+.5)+offsetSwimY;
+                        break;
+                }
+                
+                advCtx.setParams(xx,yy,gridCaseLength/5*rot2,rot);
+                Damage.draw(advCtx);
+            });
+            
             
         } else {
+            
+            var offsetSwimX = Math.cos(this.offsetSwimDirection*(t+this.offsetSwim)/(1+this.offsetSwimSpeed))*(1+this.offsetSwimWidth);
+            var offsetSwimY = Math.sin(this.offsetSwimDirection*(t+this.offsetSwim)/(1+this.offsetSwimSpeed)-.5)*(1+this.offsetSwimWidth);
+            
+            this.damage.forEach(function(d){
+                
+                var xx;
+                var yy;
+                
+                xx = gridCaseLength*(d.x+.5)+offsetSwimX;
+                yy = gridCaseHeight*(d.y+.5)+offsetSwimY;
+                
+                advCtx.setParams(xx,yy,gridCaseLength/5,0);
+                Damage.draw(advCtx);
+            });
             
         }     
         

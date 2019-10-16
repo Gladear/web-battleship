@@ -27,13 +27,11 @@ class Board {
         this.displayOcean();
         
         //Display the boats
-        players.forEach( function(player){
-            if(player.getCurrent() && displayOwnView){
-                player.drawShips(true);
-            } else if (!player.getCurrent() && !displayOwnView){
-                player.drawShips(false);
-            }
-        });
+        if(displayOwnView){
+            this.players[playerNumber-1].drawShips(true);
+        } else {
+            this.players[playerNumber-1].drawShips(false);
+        }
         
         //Display the grid over de boats
         for(var i = 1; i < gameLineNumber+1; i++){
@@ -248,6 +246,30 @@ class Board {
         });
         
         return noConflict;
+    }
+    
+    addOwnDamage(pos){
+        
+        var ship;
+        var i;
+        
+        this.players[playerNumber-1].ships.forEach(function(s){
+            i = 0;
+            s.getPositions().forEach(function(p){
+                if(pos.x == p.x && pos.y == p.y){
+                    ship = s; 
+                    ship.addDamage(i);
+                } 
+                i++;
+            });
+        });
+        
+    }
+    
+    addEnemyDamage(pos){
+        
+        this.players[playerNumber-1].enemyShip.addDamage(pos);
+        
     }
     
     checkConfilct(type,rotation){

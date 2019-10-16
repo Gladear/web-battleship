@@ -11,7 +11,7 @@
 
         <div id="ships_tab">
             
-            <h1 class="tab_title">Ships</h1>
+            <h1 class="tab_title" id="leftTab">Ships</h1>
             
             <div>
                 
@@ -27,7 +27,7 @@
                 
             </div>
             <br />
-            <div>
+            <div id="subLeftTab">
                 <label for="s1" id="s1l"><canvas id="subC" class="display_ships_tab"></canvas><span id="p1">Submarine</span> <input type="radio" id="s1" name="ship" value="0" />
                     <span id="n1">x1</span></label>
                 <br />
@@ -66,17 +66,17 @@
     </body>
     
     <script src="./src/battleship/AdvancedCtx.js"></script>
-    <script src="./src/battleship/Ship.js"></script>
     <script src="./src/battleship/Board.js"></script>
-    <script src="./src/battleship/Game.js"></script>
+    <script src="./src/battleship/DamageNotGame.js"></script>
     <script src="./src/battleship/Grid.js"></script>
     <script src="./src/battleship/Player.js"></script>
-    <script src="./src/battleship/Url.js"></script>
-    
+    <script src="./src/battleship/Ship.js"></script>
     <script src="./src/battleship/ShipNotGame.js"></script>
-    <script src="./src/battleship/DamageNotGame.js"></script>
+    <script src="./src/battleship/Url.js"></script>
+    <script src="./src/battleship/Game.js"></script>
+    <script src="./src/battleship/BoatDefinition.js"></script>
     
-    <script src="./src/controler/function.js"></script>
     <script src="./src/controler/main.js"></script>
+    <script src="./src/controler/function.js"></script>
     
 </html>

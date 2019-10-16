@@ -3,6 +3,7 @@ class Player {
         this.num = num;
         this.current = current;
         this.ships = [];
+        this.enemyShip = new Ship(0,0,-1,-1);
     }
  
     getNum(){
@@ -38,9 +39,15 @@ class Player {
     }
     
     drawShips(own){
-        this.ships.forEach( function(ship){
-            ship.draw(own);
-        });
+        
+        if(own){
+            this.ships.forEach( function(ship){
+                ship.draw(own);
+            });
+        } else {
+            this.enemyShip.draw(own);
+        }
+            
     }
     
     getShipsPos(){
