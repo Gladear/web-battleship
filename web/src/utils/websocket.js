@@ -63,11 +63,11 @@ export function off(action, callback) {
  * @param {Function} callback
  */
 export function once(action, callback) {
-  const callback = (...args) => {
-    resolve(...args);
-    off(action, callback);
+  const call = (...args) => {
+    callback(...args);
+    off(action, call);
   };
-  on(action, callback);
+  on(action, call);
 }
 
 /**
