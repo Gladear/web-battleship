@@ -47,7 +47,7 @@ interface SentMessages {
   "join": BattleID,
   "ready": Ship[],
   "fire": Location,
-  "quit": null,
+  "disconnect": null,
 }
 
 type CustomError =
@@ -64,5 +64,5 @@ interface ReceivedMessages {
   "parameters": Parameters,
   "start": null,
   "fire": FireMessage,
-  "quit": null,
+  "disconnect": null,
 }

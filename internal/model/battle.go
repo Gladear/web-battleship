@@ -21,11 +21,6 @@ func (battle *Battle) AddPlayer(player Player) {
 	battle.boards[player] = &Board{}
 }
 
-// GetNextPlayer returns the player that will play next to the current one
-func (battle *Battle) GetNextPlayer() Player {
-	return battle.GetOtherPlayer(battle.turn)
-}
-
 // GetOtherPlayer returns the enemy of the player
 func (battle *Battle) GetOtherPlayer(player Player) Player {
 	if battle.players[0] == player {
@@ -63,7 +58,7 @@ func (battle *Battle) CanFire(location Location) bool {
 
 // Fire makes the current player fire at a location
 func (battle *Battle) Fire(location Location) (affected bool, cast bool, end bool, err error) {
-	enemy := battle.GetNextPlayer()
+	enemy := battle.GetOtherPlayer(battle.turn)
 	board := battle.boards[enemy]
 
 	if err = board.fireAt(location); err != nil {

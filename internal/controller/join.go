@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"encoding/json"
 	"web-battleship/internal/client"
 	"web-battleship/internal/msg"
@@ -20,6 +21,7 @@ func handleJoin(player Player, payload json.RawMessage) *Game {
 		return nil
 	}
 
+	log.Println("A player joined game with ID " + hash)
 	ships := make([]client.ShipParameter, 0)
 
 	for _, shipType := range game.Battle.Params.Ships {

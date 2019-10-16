@@ -1,6 +1,6 @@
 import { send, on, once, off } from '../utils/websocket.js';
 import { getParam } from '../utils/query.js';
-import { onStart, onFire } from '../battleship/api.js';
+import { onStart, onEnd, onFire } from '../battleship/api.js';
 
 const gameID = getParam('gameID');
 
@@ -14,11 +14,15 @@ once('start', () => {
   onStart();
 });
 
+once('end', ({ payload: win }) => {
+  end(win);
+});
+
 function fireCallback({ payload }) {
   onFire(payload.location, payload.affected);
 
   if (payload.end) {
-    onEnd(false);
+    end(false);
   }
 }
 
@@ -42,6 +46,11 @@ export async function fireAt(location) {
     default:
       throw new Error(`Unexpected server response: ${action}`);
   }
+}
+
+export function end(win) {
+  onEnd(win);
+  send({ action: 'disconnect' });
 }
 
 window.addEventListener('beforeunload', () => {

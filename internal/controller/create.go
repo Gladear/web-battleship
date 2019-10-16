@@ -12,7 +12,7 @@ func handleCreate(player Player) *Game {
 
 	games[hash] = game
 
-	log.Printf("Game created with ID %v", hash)
+	log.Println("Game created with ID " + hash)
 	player.Send(msg.New(msg.Create, hash))
 
 	return game

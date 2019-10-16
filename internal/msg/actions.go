@@ -12,7 +12,7 @@ const (
 	Ready      Action = "ready"
 	Start      Action = "start"
 	Fire       Action = "fire"
-	Quit       Action = "quit"
+	End        Action = "end"
 )
 
 // RequireConnected checks if the player must be connected to a battle

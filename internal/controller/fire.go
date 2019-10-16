@@ -10,7 +10,6 @@ type firePayload struct {
 	Location client.Location `json:"location"`
 	Affected bool            `json:"affected"`
 	Cast     bool            `json:"cast"`
-	End      bool            `json:"end"`
 }
 
 // handleFire is called whenever a player shoots at the enemy
@@ -43,8 +42,14 @@ func (game *Game) handleFire(player Player, _payload json.RawMessage) error {
 		Location: payload,
 		Affected: affected,
 		Cast:     cast,
-		End:      end,
 	}))
+
+	if end {
+		player.Send(msg.New(msg.End, true))
+
+		enemy := game.Battle.GetOtherPlayer(player).(Player)
+		enemy.Send(msg.New(msg.End, false))
+	}
 
 	return nil
 }

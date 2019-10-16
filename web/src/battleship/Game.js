@@ -75,38 +75,40 @@ var windowXInit;
 var windowYInit;
 
 function frame(){
-    
+
     board.draw();
-    
+
 }
 
 function clock(){
-    
+
     d = new Date();
     newTime = d.getMilliseconds();
-    
+
     if(newTime-time>frameRate || (newTime<time && newTime+999-time>frameRate)){
         time = newTime;
         frame();
         t++;
     }
-    
+
     setTimeout(clock, clockRate);
 }
+
+document.body.onload = init;
 
 function init(){
 
     playerNumber = $_GET("player");
     Sh_ips = new ShipNotGame();
     Damage = new DamageNotGame();
-    
+
     if(!(playerNumber != 1 && playerNumber != 2)){
-        
+
         initGamePage();
-        
+
         windowXInit = windowsOffsetLen;
         windowYInit = windowsOffsetHei;
-    
+
         //Init Advanced ctx
         advCtx = new AdvancedCtx(context,);
 
@@ -122,7 +124,7 @@ function init(){
 
         //Init Board
         board = new Board(grid,players);
-        
+
         var ship_demo = new ShipNotGame();
 
         ship_demo.draw(0,0,18,40,10,subAC);
@@ -135,34 +137,38 @@ function init(){
     }
 }
 
+document.getElementById('battleship_board').onmousemove = cursor;
+
 function cursor(event){
-    
+
     var x = event.clientX - windowsOffsetLen + window.scrollX;
     var y = event.clientY - windowsOffsetHei + window.scrollY;
-    
+
     var len = parseInt(x / gridCaseLength);
     var hei = parseInt(y / gridCaseHeight);
-    
-    board.setSelectedCoord(len,hei); 
-    
+
+    board.setSelectedCoord(len,hei);
+
 }
 
 function isPlayerTurn(){
     return !placementPhase && turn == playerNumber;
 }
 
+document.getElementById('battleship_board').onclick = cursorClick;
+
 function cursorClick(){
-    
-    
+
+
     if(!board.selectedX && !board.selectedY){
         //Switch the view
         displayOwnView = !displayOwnView;
     }
-    
+
     if(placementPhase){
-        
+
         var or = document.getElementById('o1').checked ? 0 : 1;
-        
+
         if (document.getElementById('s1').checked && board.checkConfilct(0,or)) {
             //Submarine
             nbSubmarine--;
@@ -173,10 +179,10 @@ function cursorClick(){
             }
 
             updateShipNumber();
-            board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,0,or));        
-            
+            board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,0,or));
+
         }
-        
+
         if (document.getElementById('s2').checked && board.checkConfilct(1,or)) {
             //Carrier
             nbCarrier--;
@@ -185,12 +191,12 @@ function cursorClick(){
                 document.getElementById('s2').checked = false;
                 document.getElementById('p2').style.color = "rgba(0, 0, 0, 0.5)";
             }
-            
+
             updateShipNumber();
             board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,1,or));
-            
+
         }
-        
+
         if (document.getElementById('s3').checked && board.checkConfilct(2,or)) {
             //Battleship
             nbBattleship--;
@@ -199,12 +205,12 @@ function cursorClick(){
                 document.getElementById('s3').checked = false;
                 document.getElementById('p3').style.color = "rgba(0, 0, 0, 0.5)";
             }
-            
+
             updateShipNumber();
             board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,2,or));
-            
+
         }
-        
+
         if (document.getElementById('s4').checked && board.checkConfilct(3,or)) {
             //Patrol Boat
             nbPatrolBoat--;
@@ -213,32 +219,32 @@ function cursorClick(){
                 document.getElementById('s4').checked = false;
                 document.getElementById('p4').style.color = "rgba(0, 0, 0, 0.5)";
             }
-            
+
             updateShipNumber();
             board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,3,or));
-            
+
         }
-        
+
         if (document.getElementById('s5').checked && board.checkConfilct(4,or)) {
             //Cruiser
             nbCruiser--;
             if(!nbCruiser){
                 document.getElementById('s5').disabled = true;
                 document.getElementById('s5').checked = false;
-                document.getElementById('p5').style.color = "rgba(0, 0, 0, 0.5)";  
+                document.getElementById('p5').style.color = "rgba(0, 0, 0, 0.5)";
             }
-            
+
             updateShipNumber();
             board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,4,or));
-            
+
         }
-        
+
         if (document.getElementById('s6').checked) {
             //Delete
             var typeDel = board.deleteShip();
-            
+
             if(typeDel != -1){
-                
+
                 switch(typeDel){
                     case 0:
                         nbSubmarine++;
@@ -271,27 +277,27 @@ function cursorClick(){
                         document.getElementById('n5').innerHTML = "x"+nbCruiser;
                         break;
                 }
-                
+
             }
-            
+
         }
-        
+
     } else {
         board.setFireCoord();
     }
-    
+
 }
 
 function updateUIFire(){
-    
+
     if(isPlayerTurn()){
         document.getElementById("button_fire").disabled = false;
     } else {
         document.getElementById("button_fire").disabled = true;
     }
-    
+
     setTimeout(updateView, 1000);
-    
+
 }
 
 function updateView(){
@@ -303,34 +309,34 @@ function updateView(){
 }
 
 function recieveFire(){
-    
+
     //Recieve enemy fire
-    
-    
+
+
     //Update the UI
     turn = playerNumber;
     updateUIFire();
 }
 
 function fire(){
-    
+
     if(isPlayerTurn() && board.firePositionValid()){
-        
+
         //Send to server
-        
-        
-        var newPos = {x:board.fireX,y:board.fireY}; 
+
+
+        var newPos = {x:board.fireX,y:board.fireY};
         board.addPosEnemy(newPos);
-        
+
         //Update the UI
         turn = playerNumber==1 ? 2 : 1;
         updateUIFire();
         board.resetFireCase();
-        
+
     }
-    
+
     console.log("test");
-    
+
 }
 
 function gameReady(){
@@ -338,32 +344,32 @@ function gameReady(){
 }
 
 function updateUI(){
-    
+
     placementPhase = false;
     document.getElementById("button_ready").style.display = "none";
     document.getElementById("button_fire").style.display = "block";
-    
+
     updateUIFire();
-    
+
     document.getElementById("o1l").style.display = "none";
     document.getElementById("o2l").style.display = "none";
     document.getElementById("s6l").style.display = "none";
-    
+
     nbSubmarine = 1;
     nbCarrier = 1;
     nbBattleship = 2;
     nbCruiser = 2;
-    nbPatrolBoat = 3; 
-    
+    nbPatrolBoat = 3;
+
     updateShipNumber();
 }
 
 function updateShipNumber(){
-    
+
     document.getElementById('n1').innerHTML = "x"+nbSubmarine;
     document.getElementById('n2').innerHTML = "x"+nbCarrier;
     document.getElementById('n3').innerHTML = "x"+nbBattleship;
     document.getElementById('n4').innerHTML = "x"+nbPatrolBoat;
     document.getElementById('n5').innerHTML = "x"+nbCruiser;
-    
+
 }

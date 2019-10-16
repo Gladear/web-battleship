@@ -1,6 +1,5 @@
-import { fireAt } from './play';
+import { end as endGame, fireAt } from './play';
 import { send } from '../utils/websocket';
-import { onEnd } from '../battleship/api.js';
 
 export async function ready(ships) {
   return send({
@@ -18,7 +17,7 @@ export async function fire(position) {
   const { location, affected: hit, end } = fireAt(position);
 
   if (end) {
-    Promise.resolve().then(() => onEnd());
+    Promise.resolve().then(() => endGame(true));
   }
 
   return {
