@@ -7,7 +7,6 @@ import (
 
 func handleCreate(player Player) *Game {
 	game := newGame()
-	game.addPlayer(player)
 
 	hash := generateHash()
 

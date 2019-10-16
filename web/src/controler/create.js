@@ -1,19 +1,5 @@
-document.getElementById("button_create").addEventListener("click", create);
-document.getElementById("button_join").addEventListener("click", join);
-var hash;
+import { send } from '../utils/websocket.js'
 
-function create(){
-    
-    hash = send_create();
-    
-    document.getElementById("hash").value = hash;
-    document.getElementById("button_create").style.display = "none";
-    document.getElementById("button_join").style.display = "block";
-    
-}
-
-function join(){
-    
-    window.location.href = "./play.html?player=1&hash="+hash;
-    
-}
+send({ action: 'create' }).then(({ payload: gameID }) => {
+  document.forms.menu.gameID.value = gameID;
+}, console.error);
