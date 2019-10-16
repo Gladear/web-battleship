@@ -8,7 +8,7 @@ if (!gameID) {
 }
 
 send({ action: 'join', payload: gameID }).then(play, console.error);
-document.forms.setting.addEventListener('onsubmit', SendParameters);  
+document.forms.settings.addEventListener('onsubmit', SendParameters);  
 
 
 function play() {
