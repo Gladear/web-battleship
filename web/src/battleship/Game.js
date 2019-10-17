@@ -7,6 +7,11 @@ import {Ship} from "./Ship.js";
 import {ShipNotGame} from "./ShipNotGame.js";
 
 import {$_GET} from "./Url.js";
+import {
+    sendReady,
+    sendQuit,
+    sendFire,
+} from "./api.js";
 
 var canvas = document.getElementById("battleship_board");
 var context = canvas.getContext("2d");
@@ -38,8 +43,10 @@ export var gridCaseHeight;
 export var gameBoardLength;
 export var gameBoardHeight;
 
-document.getElementById('battleship_board').onmousemove = cursor;
-document.getElementById('battleship_board').onclick = cursorClick;
+document.getElementById("battleship_board").onmousemove = cursor;
+document.getElementById("battleship_board").onclick = cursorClick;
+
+document.getElementById("button_ready").onclick = convertShips;
 
 export var oceanWaveColor = "#5489d1";
 export var oceanColor = "#2f70c7";
@@ -172,6 +179,60 @@ export function clock(){
 }
 
 
+function readyClick(){
+    
+    if(gameReady()){
+        sendReady(convertShips());
+    }
+    
+}
+
+function convertShips(){
+    
+    var player = board.players[playerNumber-1];
+    
+    var shipsToModel = [];
+    
+    player.ships.forEach( function(ship){
+        var type;
+        
+        switch(ship.type){
+            case 0:
+                type = 'Submarine';
+                break;
+            case 1:
+                type = 'Carrier';
+                break;
+            case 2:
+                type = 'Battleship';
+                break;
+            case 3:
+                type = 'Patrol Boat';
+                break;
+            case 4:
+                type = 'Cruiser';
+                break;
+        }
+        
+        var position = {
+            x: ship.x,
+            y: ship.y,
+            orientation: ship.rotation ? 'V' : 'H'
+        }
+        
+        var s = {
+            position: position,
+            type: type
+        }
+        
+        shipsToModel.push(s);
+    });
+ 
+    return shipsToModel;
+    
+}
+
+
 
 //User interface
 
@@ -215,121 +276,6 @@ export function cursorClick(){
     }
 
     if(placementPhase){
-
-        /*var or = document.getElementById('o1').checked ? 0 : 1;
-
-        if (document.getElementById('s1').checked && board.checkConfilct(0,or)) {
-            //Submarine
-            nbSubmarine--;
-            if(!nbSubmarine){
-                document.getElementById('s1').disabled = true;
-                document.getElementById('s1').checked = false;
-                document.getElementById('p1').style.color = "rgba(0, 0, 0, 0.5)";
-            }
-
-            updateShipNumber();
-            board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,0,or));
-
-        }
-
-        if (document.getElementById('s2').checked && board.checkConfilct(1,or)) {
-            //Carrier
-            nbCarrier--;
-            if(!nbCarrier){
-                document.getElementById('s2').disabled = true;
-                document.getElementById('s2').checked = false;
-                document.getElementById('p2').style.color = "rgba(0, 0, 0, 0.5)";
-            }
-
-            updateShipNumber();
-            board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,1,or));
-
-        }
-
-        if (document.getElementById('s3').checked && board.checkConfilct(2,or)) {
-            //Battleship
-            nbBattleship--;
-            if(!nbBattleship){
-                document.getElementById('s3').disabled = true;
-                document.getElementById('s3').checked = false;
-                document.getElementById('p3').style.color = "rgba(0, 0, 0, 0.5)";
-            }
-
-            updateShipNumber();
-            board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,2,or));
-
-        }
-
-        if (document.getElementById('s4').checked && board.checkConfilct(3,or)) {
-            //Patrol Boat
-            nbPatrolBoat--;
-            if(!nbPatrolBoat){
-                document.getElementById('s4').disabled = true;
-                document.getElementById('s4').checked = false;
-                document.getElementById('p4').style.color = "rgba(0, 0, 0, 0.5)";
-            }
-
-            updateShipNumber();
-            board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,3,or));
-
-        }
-
-        if (document.getElementById('s5').checked && board.checkConfilct(4,or)) {
-            //Cruiser
-            nbCruiser--;
-            if(!nbCruiser){
-                document.getElementById('s5').disabled = true;
-                document.getElementById('s5').checked = false;
-                document.getElementById('p5').style.color = "rgba(0, 0, 0, 0.5)";
-            }
-
-            updateShipNumber();
-            board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,4,or));
-
-        }
-
-        if (document.getElementById('s6').checked) {
-            //Delete
-            var typeDel = board.deleteShip();
-
-            if(typeDel != -1){
-
-                switch(typeDel){
-                    case 0:
-                        nbSubmarine++;
-                        document.getElementById('s1').disabled = false;
-                        document.getElementById('p1').style.color = "rgba(0, 0, 0, 1)";
-                        document.getElementById('n1').innerHTML = "x"+nbSubmarine;
-                        break;
-                    case 1:
-                        nbCarrier++;
-                        document.getElementById('s2').disabled = false;
-                        document.getElementById('p2').style.color = "rgba(0, 0, 0, 1)";
-                        document.getElementById('n2').innerHTML = "x"+nbCarrier;
-                        break;
-                    case 2:
-                        nbBattleship++;
-                        document.getElementById('s3').disabled = false;
-                        document.getElementById('p3').style.color = "rgba(0, 0, 0, 1)";
-                        document.getElementById('n3').innerHTML = "x"+nbBattleship;
-                        break;
-                    case 3:
-                        nbPatrolBoat++;
-                        document.getElementById('s4').disabled = false;
-                        document.getElementById('p4').style.color = "rgba(0, 0, 0, 1)";
-                        document.getElementById('n4').innerHTML = "x"+nbPatrolBoat;
-                        break;
-                    case 4:
-                        nbCruiser++;
-                        document.getElementById('s5').disabled = false;
-                        document.getElementById('p5').style.color = "rgba(0, 0, 0, 1)";
-                        document.getElementById('n5').innerHTML = "x"+nbCruiser;
-                        break;
-                }
-
-            }
-
-        }*/
         
         var checked = document.querySelector('[name="ship"]:checked');
         
@@ -340,6 +286,7 @@ export function cursorClick(){
             if(value != 99){
                 
                 var or = document.getElementById('o1').checked ? 0 : 1;
+                console.log(board.checkConfilct(value,or));
                 if(board.checkConfilct(value,or)){
                     
                     boats.forEach(function(boat){
@@ -372,6 +319,13 @@ export function createBoatTab(){
     var boatTab = document.createElement("div");
 
     boats.forEach(function(boat){
+        
+        var n;
+        if(placementPhase){
+            n = boat.leftPlacement;
+        } else {
+            n = boat.leftPlayer;
+        }
 
         var btl = document.createElement("label");
         btl.setAttribute("for","s"+(boat.id+1));
@@ -390,15 +344,14 @@ export function createBoatTab(){
         inp.setAttribute("id","s"+(boat.id+1));
         inp.setAttribute("name","ship");
         inp.setAttribute("value",boat.id);
+        if(placementPhase){
+            if(!n) inp.setAttribute("disabled","true");
+        } else {
+            inp.setAttribute("style","display: none");
+        }
 
         var nb = document.createElement("span");
         nb.setAttribute("id","n"+(boat.id+1));
-        var n;
-        if(placementPhase){
-            n = boat.leftPlacement;
-        } else {
-            n = boat.leftPlayer;
-        }
         nb.innerHTML = "x"+n;
 
         btl.appendChild(can);
@@ -478,12 +431,6 @@ export function updateUI(){
 
     document.getElementById("leftTab").innerHTML= "Score";
 
-    nbSubmarine = 1;
-    nbCarrier = 1;
-    nbBattleship = 2;
-    nbCruiser = 2;
-    nbPatrolBoat = 3;
-
     updateShipNumber();
 }
 
@@ -507,7 +454,13 @@ export function isPlayerTurn(){
 }
 
 export function gameReady(){
-    return !nbSubmarine && !nbCarrier && !nbBattleship && !nbPatrolBoat && !nbCruiser;
+    var ready = true;
+    
+    boats.forEach(function(boat){
+        if(boat.leftPlacement) ready = false;
+    });
+    
+    return ready;
 }
 
 

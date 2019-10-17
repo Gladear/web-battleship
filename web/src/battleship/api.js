@@ -1,30 +1,21 @@
-function onParamater(parameters){  
-    initParamaters(parameters);  
+import {
+    updateUIFire,
+    initParamaters,
+    board,
+} from "./Game.js";
+
+//Send
+
+export function sendReady(ships){
+    ready(ships);
 }
 
-function sendReady(){
-    if(gameReady()) ready(ships);
-}
-
-function onReady(){
-    //Triggerd when both players are ready
-    //The game can switch from placement to fire phase
-
-    updateUI();
-
-}
-
-function sendQuit(){
+export function sendQuit(){
     //Triggerd when quitting the game
     
 }
 
-function onQuit(){
-    //Triggerd when the enemy quits the game
-    
-}
-
-function async sendFire(){
+export async function sendFire(){
     //Triggerd when sending a fire to the server
     
     if(isPlayerTurn() && board.firePositionValid()){
@@ -49,7 +40,26 @@ function async sendFire(){
         
 }
 
-function onFire(pos,hit){
+//Recieve
+
+export function onParamater(parameters){  
+    initParamaters(parameters);  
+}
+
+export function onReady(){
+    //Triggerd when both players are ready
+    //The game can switch from placement to fire phase
+
+    updateUI();
+
+}
+
+export function onQuit(){
+    //Triggerd when the enemy quits the game
+    
+}
+
+export function onFire(pos,hit){
     //Triggerd when recieving a fire from the server
     //Player is the one who got fired at
     board.addPosOwn(pos);
@@ -61,7 +71,7 @@ function onFire(pos,hit){
     updateUIFire();
 }
 
-function onEnd(win){
+export function onEnd(win){
     //Triggerd when winning the game
 
 }
