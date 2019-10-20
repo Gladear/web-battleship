@@ -2,12 +2,20 @@ import {
     updateUIFire,
     initParamaters,
     board,
+    updateUI,
 } from "./Game.js";
 
-//Send
+/********************************
+* Send
+********************************/
 
 export function sendReady(ships){
-    ready(ships);
+    
+    console.log(ships);
+    
+    //Send ready to the server with ships
+    
+    
 }
 
 export function sendQuit(){
@@ -40,7 +48,10 @@ export async function sendFire(){
         
 }
 
-//Recieve
+
+/********************************
+* Recieve
+********************************/
 
 export function onParamater(parameters){  
     initParamaters(parameters);  

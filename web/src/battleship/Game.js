@@ -46,7 +46,7 @@ export var gameBoardHeight;
 document.getElementById("battleship_board").onmousemove = cursor;
 document.getElementById("battleship_board").onclick = cursorClick;
 
-document.getElementById("button_ready").onclick = convertShips;
+document.getElementById("button_ready").onclick = readyClick;
 
 export var oceanWaveColor = "#5489d1";
 export var oceanColor = "#2f70c7";
@@ -62,7 +62,7 @@ export var advCtx;
 var grid;
 export var board;
 
-var placementPhase = true;
+export var placementPhase = true;
 
 export var playerNumber;
 
@@ -78,11 +78,11 @@ var boatPoint;
 //Inits & game core
 
 export function initParamaters(parameters){
-    
+
     //Init boats list
     boats = [];
     boatPointMax = 0;
-    
+
     parameters.ships.forEach(function(boat){
         var id;
         switch(boat.name){
@@ -102,13 +102,13 @@ export function initParamaters(parameters){
                 id = 4;
                 break;
         }
-        
+
         boats.push({id:id,name:boat.name,length:boat.length,count:boat.count,leftPlacement:boat.count,leftPlayer:boat.count});
         boatPointMax += boat.count * boat.length;
     });
-    
+
     boatPoint = 0;
-    
+
     //Set board parameters
     gameLineNumber = parameters.width;
     gameColNumber = parameters.height;
@@ -118,16 +118,19 @@ export function initParamaters(parameters){
 
     gameBoardLength = gridCaseLength*gameColNumber;
     gameBoardHeight = gridCaseLength*gameLineNumber;
-    
+
 }
 
 function init(){
-    
-    var bs = [{name:"Submarine",length:3,count:6},{name:"Battleship",length:4,count:1},{name:"Patrol Boat",length:2,count:2}];
+
+    //Todo remove *************************************
+    var bs = [{name:"Submarine",length:3,count:2}];
     var parameters = {ships:bs,width:10,height:10};
     initParamaters(parameters);
+    //*************************************************
+    
+    
     ship_demo = new ShipNotGame();
-
     playerNumber = $_GET("player");
     Sh_ips = new ShipNotGame();
     Damage = new DamageNotGame();
@@ -151,7 +154,7 @@ function init(){
 
         //Init Board
         board = new Board(grid,players);
-        
+
         updateBoatTab();
 
         clock();
@@ -180,22 +183,22 @@ export function clock(){
 
 
 function readyClick(){
-    
+
     if(gameReady()){
         sendReady(convertShips());
     }
-    
+
 }
 
 function convertShips(){
-    
+
     var player = board.players[playerNumber-1];
-    
+
     var shipsToModel = [];
-    
+
     player.ships.forEach( function(ship){
         var type;
-        
+
         switch(ship.type){
             case 0:
                 type = 'Submarine';
@@ -213,25 +216,24 @@ function convertShips(){
                 type = 'Cruiser';
                 break;
         }
-        
+
         var position = {
             x: ship.x,
             y: ship.y,
             orientation: ship.rotation ? 'V' : 'H'
         }
-        
+
         var s = {
             position: position,
             type: type
         }
-        
+
         shipsToModel.push(s);
     });
- 
-    return shipsToModel;
-    
-}
 
+    return shipsToModel;
+
+}
 
 
 //User interface
@@ -250,53 +252,53 @@ export function cursor(event){
 
 export function cursorClick(){
 
-
     if(!board.selectedX && !board.selectedY && !placementPhase){
 
         //Switch the view
         displayOwnView = !displayOwnView;
 
         //Update Score view
-        var subLeftTab;
-
-        if(displayOwnView){
-
-            subLeftTab = createBoatTab();
-
-        } else {
-           var score = boatPoint+" / "+boatPointMax;
-
-            subLeftTab = document.createElement("p");
-            subLeftTab.innerHTML = score;
-        }
-
-        document.getElementById("subLeftTab").innerHTML = "";
-        document.getElementById("subLeftTab").appendChild(subLeftTab);
-
+        updateScoreUI();
     }
 
     if(placementPhase){
-        
+
         var checked = document.querySelector('[name="ship"]:checked');
-        
+
         if(checked != null){
-            
-            var value = checked.value;
-            
+
+            var value = parseInt(checked.value);
+
             if(value != 99){
-                
+
+                var valSel = value;
                 var or = document.getElementById('o1').checked ? 0 : 1;
-                console.log(board.checkConfilct(value,or));
                 if(board.checkConfilct(value,or)){
-                    
+
                     boats.forEach(function(boat){
                         if(boat.id == value){
                             boat.leftPlacement--;
-                            updateBoatTab();
                             board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,value,or));
+                            
+                            if(!boat.leftPlacement){
+                                valSel = -1;
+                            }
+                            
                         }
                     });         
                 }
+                updateBoatTab(valSel);
+            } else {
+                var typeDel = board.deleteShip();
+                console.log(typeDel);
+                
+                boats.forEach(function(boat){
+                    if(boat.id == typeDel){
+                        boat.leftPlacement++;
+                    }
+                });
+                
+                updateBoatTab(99);
             }
         }
 
@@ -306,20 +308,20 @@ export function cursorClick(){
 
 }
 
-function updateBoatTab(){
-    
+function updateBoatTab(val){
+
     document.getElementById("subLeftTab").innerHTML = "";
-    document.getElementById("subLeftTab").appendChild(createBoatTab());
-    
+    document.getElementById("subLeftTab").appendChild(createBoatTab(val));
+
     drawBoatTab();
 }
 
-export function createBoatTab(){
+export function createBoatTab(val){
 
     var boatTab = document.createElement("div");
 
     boats.forEach(function(boat){
-        
+
         var n;
         if(placementPhase){
             n = boat.leftPlacement;
@@ -346,8 +348,9 @@ export function createBoatTab(){
         inp.setAttribute("value",boat.id);
         if(placementPhase){
             if(!n) inp.setAttribute("disabled","true");
+            else if(val == boat.id) inp.setAttribute("checked",true);
         } else {
-            inp.setAttribute("style","display: none");
+            inp.setAttribute("style","opacity: 0");
         }
 
         var nb = document.createElement("span");
@@ -362,10 +365,10 @@ export function createBoatTab(){
         boatTab.appendChild(btl);
         boatTab.appendChild(document.createElement("br"));
     });
-    
+
     if(placementPhase){
         boatTab.appendChild(document.createElement("br"));
-        
+
         var btl = document.createElement("label");
         btl.setAttribute("for","s6");
         btl.setAttribute("id","s6l");
@@ -386,7 +389,7 @@ export function createBoatTab(){
         btl.appendChild(na);
         btl.appendChild(inp);
         btl.appendChild(nb);
-        
+
         boatTab.appendChild(btl);
     }
 
@@ -397,23 +400,14 @@ export function createBoatTab(){
 export function drawBoatTab(){
 
     boats.forEach(function(boat){
-       
+
         var element_ = document.getElementById(boat.name+"C");
         var context_ = element_.getContext("2d");
         var advCtx_ = new AdvancedCtx(context_);
         ship_demo.draw(boat.id,0,18,40,10,advCtx_);
-        
+
     });
-    
-}
 
-
-export function updateView(){
-    if(isPlayerTurn()){
-        displayOwnView = false;
-    } else {
-        displayOwnView = true;
-    }
 }
 
 export function updateUI(){
@@ -421,17 +415,15 @@ export function updateUI(){
     //Update UI switching from placement to fire phase
     placementPhase = false;
     document.getElementById("button_ready").style.display = "none";
-    document.getElementById("button_fire").style.display = "block";
-
-    updateUIFire();
+    document.getElementById("button_fire").style.display = "block"; 
 
     document.getElementById("o1l").style.display = "none";
     document.getElementById("o2l").style.display = "none";
     document.getElementById("s6l").style.display = "none";
-
     document.getElementById("leftTab").innerHTML= "Score";
 
-    updateShipNumber();
+    updateBoatTab();
+    updateUIFire();
 }
 
 export function updateUIFire(){
@@ -441,9 +433,37 @@ export function updateUIFire(){
     } else {
         document.getElementById("button_fire").disabled = true;
     }
-
     setTimeout(updateView, 1000);
+}
 
+export function updateView(){
+    if(isPlayerTurn()){
+        displayOwnView = false;
+    } else {
+        displayOwnView = true;
+    }
+    updateScoreUI();
+}
+
+function updateScoreUI(){
+    
+    //Update Score view
+    var subLeftTab;
+
+    if(displayOwnView){
+
+        subLeftTab = createBoatTab();
+
+    } else {
+        var score = boatPoint+" / "+boatPointMax;
+
+        subLeftTab = document.createElement("p");
+        subLeftTab.innerHTML = score;
+    }
+
+    document.getElementById("subLeftTab").innerHTML = "";
+    document.getElementById("subLeftTab").appendChild(subLeftTab);
+    
 }
 
 
@@ -455,11 +475,11 @@ export function isPlayerTurn(){
 
 export function gameReady(){
     var ready = true;
-    
+
     boats.forEach(function(boat){
         if(boat.leftPlacement) ready = false;
     });
-    
+
     return ready;
 }
 
