@@ -11,7 +11,7 @@ import {
 
 export function sendReady(ships){
     
-    console.log(ships);
+    console.log("ready");
     
     //Send ready to the server with ships
     
@@ -19,6 +19,9 @@ export function sendReady(ships){
 }
 
 export function sendQuit(){
+    
+    console.log("quit");
+    
     //Triggerd when quitting the game
     
 }
@@ -27,6 +30,8 @@ export async function sendFire(){
     //Triggerd when sending a fire to the server
     
     if(isPlayerTurn() && board.firePositionValid()){
+        
+        console.log("fire");
         
         var pos = {x:board.fireX,y:board.fireY};
         
