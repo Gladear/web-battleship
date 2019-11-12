@@ -14,7 +14,7 @@ export async function leave() {
 }
 
 export async function fire(position) {
-  const { location, affected: hit, end } = fireAt(position);
+  const { location, affected: hit, end } = await fireAt(position);
 
   if (end) {
     Promise.resolve().then(() => endGame(true));
