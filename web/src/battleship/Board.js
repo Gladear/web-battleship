@@ -13,7 +13,6 @@ import {
     gameLineNumber,
     boardColor,
     advCtx,
-    board,
     placementPhase,
 } from './Game.js';
 
@@ -30,45 +29,45 @@ export class Board {
     }
 
     getGrid() {
-        return board.grid;
+        return this.grid;
     }
 
     draw() {
         //Clear the board
-        board.clearBoard();
+        this.clearBoard();
 
         //Display the grid
-        board.grid.draw();
+        this.grid.draw();
 
         //Display the ocean
-        board.displayOcean();
+        this.displayOcean();
 
         //Display the boats
         if (displayOwnView) {
-            board.players[0].drawShips(true);
+            this.players[0].drawShips(true);
         } else {
-            board.players[1].drawShips(false);
+            this.players[1].drawShips(false);
         }
 
         //Display the grid over de boats
         for (var i = 1; i < gameLineNumber + 1; i++) {
             for (var j = 1; j < gameColNumber + 1; j++) {
                 advCtx.setParams(i * gridCaseLength + 1, j * gridCaseLength + 1, 1, 0);
-                board.drawBoardGrid();
+                this.drawBoardGrid();
             }
         }
 
         //Display the switch button
-        board.drawSwitchButton();
+        this.drawSwitchButton();
 
         //Display the selected case
-        board.drawCase();
+        this.drawCase();
 
         //Display the selected fire case
-        board.drawFireCase();
+        this.drawFireCase();
 
         //Display already fired cases
-        board.drawFire();
+        this.drawFire();
     }
 
     clearBoard() {
@@ -130,13 +129,13 @@ export class Board {
     }
 
     setSelectedCoord(selectedX, selectedY) {
-        board.selectedX = selectedX;
-        board.selectedY = selectedY;
+        this.selectedX = selectedX;
+        this.selectedY = selectedY;
     }
 
     setFireCoord() {
-        board.fireX = board.selectedX;
-        board.fireY = board.selectedY;
+        this.fireX = this.selectedX;
+        this.fireY = this.selectedY;
     }
 
     drawBoardCase(x, y, c1, c2) {
@@ -155,13 +154,13 @@ export class Board {
 
     drawCase() {
         if (
-            (!board.selectedX && !board.selectedY) ||
-            (board.selectedX && board.selectedX < 11 && board.selectedY && board.selectedY < 11)
+            (!this.selectedX && !this.selectedY) ||
+            (this.selectedX && this.selectedX < 11 && this.selectedY && this.selectedY < 11)
         ) {
             var cStrokeColor;
             var cFillColor;
 
-            if (!board.selectedX && !board.selectedY) {
+            if (!this.selectedX && !this.selectedY) {
                 cStrokeColor = 'rgba(68, 186, 46, 0.74)';
                 cFillColor = 'rgba(64, 204, 58, 0.49)';
             } else {
@@ -169,28 +168,28 @@ export class Board {
                 cFillColor = 'rgba(204, 193, 58, 0.49)';
             }
 
-            board.drawBoardCase(board.selectedX, board.selectedY, cStrokeColor, cFillColor);
+            this.drawBoardCase(this.selectedX, this.selectedY, cStrokeColor, cFillColor);
         }
     }
 
     resetFireCase() {
-        board.fireX = 0;
-        board.fireY = 1;
+        this.fireX = 0;
+        this.fireY = 1;
     }
 
     drawFireCase() {
         if (
             !displayOwnView &&
             !placementPhase &&
-            board.fireX &&
-            board.fireX < 11 &&
-            board.fireY &&
-            board.fireY < 11
+            this.fireX &&
+            this.fireX < 11 &&
+            this.fireY &&
+            this.fireY < 11
         ) {
             var cStrokeColor = 'rgba(186, 68, 46, 0.74)';
             var cFillColor = 'rgba(204, 92, 58, 0.49)';
 
-            board.drawBoardCase(board.fireX, board.fireY, cStrokeColor, cFillColor);
+            this.drawBoardCase(this.fireX, this.fireY, cStrokeColor, cFillColor);
         }
     }
 
@@ -199,12 +198,12 @@ export class Board {
         var cFillColor = 'rgba(204, 170, 58, 0.49)';
 
         if (displayOwnView) {
-            board.fireOwn.forEach(function(pos) {
-                board.drawBoardCase(pos.x, pos.y, cStrokeColor, cFillColor);
+            this.fireOwn.forEach(function(pos) {
+                this.drawBoardCase(pos.x, pos.y, cStrokeColor, cFillColor);
             });
         } else {
-            board.fireEnemy.forEach(function(pos) {
-                board.drawBoardCase(pos.x, pos.y, cStrokeColor, cFillColor);
+            this.fireEnemy.forEach(function(pos) {
+                this.drawBoardCase(pos.x, pos.y, cStrokeColor, cFillColor);
             });
         }
     }
@@ -266,7 +265,7 @@ export class Board {
         var ship;
         var i;
 
-        board.players[0].ships.forEach(function(s) {
+        this.players[0].ships.forEach(function(s) {
             i = 0;
             s.getPositions().forEach(function(p) {
                 if (pos.x == p.x && pos.y == p.y) {
@@ -279,7 +278,7 @@ export class Board {
     }
 
     addEnemyDamage(pos) {
-        board.players[1].enemyShip.addDamage(pos);
+        this.players[1].enemyShip.addDamage(pos);
     }
 
     checkConfilct(type, rotation) {
@@ -307,12 +306,12 @@ export class Board {
 
         if (rotation) {
             for (var i = 0; i < lenShip; i++) {
-                var pos = { x: board.selectedX, y: board.selectedY + i };
+                var pos = { x: this.selectedX, y: this.selectedY + i };
                 posShip.push(pos);
             }
         } else {
             for (var i = 0; i < lenShip; i++) {
-                var pos = { x: board.selectedX + i, y: board.selectedY };
+                var pos = { x: this.selectedX + i, y: this.selectedY };
                 posShip.push(pos);
             }
         }
@@ -323,41 +322,41 @@ export class Board {
         });
 
         if (noConflict) {
-            var posPlayer = board.players[0].getShipsPos();
-            noConflict = board.checkPos(posPlayer, posShip);
+            var posPlayer = this.players[0].getShipsPos();
+            noConflict = this.checkPos(posPlayer, posShip);
         }
 
         return noConflict;
     }
 
     deleteShip() {
-        board.typeDel = -1;
+        this.typeDel = -1;
 
-        board.players[0].ships.forEach(function(ship) {
+        this.players[0].ships.forEach(function(ship) {
             ship.getPositions().forEach(function(pos) {
-                if (pos.x == board.selectedX && pos.y == board.selectedY) {
-                    board.typeDel = ship.type;
-                    board.players[0].removeShip(ship);
+                if (pos.x == this.selectedX && pos.y == this.selectedY) {
+                    this.typeDel = ship.type;
+                    this.players[0].removeShip(ship);
                 }
             });
         });
 
-        return board.typeDel;
+        return this.typeDel;
     }
 
     addPosEnemy(pos) {
-        board.fireEnemy.push(pos);
+        this.fireEnemy.push(pos);
     }
 
     addPosOwn(pos) {
-        board.fireOwn.push(pos);
+        this.fireOwn.push(pos);
     }
 
     firePositionValid() {
         var valid = true;
 
-        board.fireEnemy.forEach(function(pos) {
-            if (pos.x == board.fireX && pos.y == board.fireY) valid = false;
+        this.fireEnemy.forEach(function(pos) {
+            if (pos.x == this.fireX && pos.y == this.fireY) valid = false;
         });
 
         return valid;
