@@ -1,6 +1,6 @@
 import { send, on, once, off } from '../utils/websocket.js';
 import { getParam } from '../utils/query.js';
-import { onStart, onEnd, onFire } from '../battleship/api.js';
+import { onReady, onEnd, onFire } from '../battleship/api.js';
 
 const gameID = getParam('gameID');
 
@@ -11,7 +11,7 @@ if (!gameID) {
 send({ action: 'join', payload: gameID })
 
 once('start', () => {
-  onStart();
+  onReady();
 });
 
 once('end', ({ payload: win }) => {

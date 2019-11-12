@@ -133,34 +133,31 @@ function init(){
 
 
     ship_demo = new ShipNotGame();
-    playerNumber = $_GET("player");
     Sh_ips = new ShipNotGame();
     Damage = new DamageNotGame();
+    
+    windowXInit = windowsOffsetLen;
+    windowYInit = windowsOffsetHei;
 
-    if(!(playerNumber != 1 && playerNumber != 2)){
-        windowXInit = windowsOffsetLen;
-        windowYInit = windowsOffsetHei;
+    //Init Advanced ctx
+    advCtx = new AdvancedCtx(context,);
 
-        //Init Advanced ctx
-        advCtx = new AdvancedCtx(context,);
+    //Init Players
+    var playerO = new Player(1,1);
+    var playerE = new Player(2,0);
+    var players = [];
+    players.push(playerO);
+    players.push(playerE);
 
-        //Init Players
-        var player1 = new Player(1,playerNumber==1);
-        var player2 = new Player(2,playerNumber==2);
-        var players = [];
-        players.push(player1);
-        players.push(player2);
+    //Init grid
+    grid = new Grid(gameColNumber,gameLineNumber,gridCaseLength,gridCaseHeight,gridTxtLength,gridColor);
 
-        //Init grid
-        grid = new Grid(gameColNumber,gameLineNumber,gridCaseLength,gridCaseHeight,gridTxtLength,gridColor);
+    //Init Board
+    board = new Board(grid,players);
 
-        //Init Board
-        board = new Board(grid,players);
+    updateBoatTab();
 
-        updateBoatTab();
-
-        clock();
-    }
+    clock();
 }
 
 export function frame(){
@@ -194,7 +191,7 @@ function readyClick(){
 
 function convertShips(){
 
-    var player = board.players[playerNumber-1];
+    var player = board.players[0];
 
     var shipsToModel = [];
 
@@ -280,7 +277,7 @@ export function cursorClick(){
                     boats.forEach(function(boat){
                         if(boat.id == value){
                             boat.leftPlacement--;
-                            board.players[playerNumber-1].addShip(new Ship(board.selectedX,board.selectedY,value,or));
+                            board.players[0].addShip(new Ship(board.selectedX,board.selectedY,value,or));
 
                             if(!boat.leftPlacement){
                                 valSel = -1;

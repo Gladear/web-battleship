@@ -3,6 +3,7 @@ import {
     initParamaters,
     board,
     updateUI,
+    playerNumber,
 } from "./Game.js";
 
 /********************************
@@ -62,10 +63,11 @@ export function onParamater(parameters){
     initParamaters(parameters);
 }
 
-export function onReady(){
+export function onReady(playernb){
     //Triggerd when both players are ready
     //The game can switch from placement to fire phase
 
+    playerNumber = playernb == 1 ? 1 : 2;
     updateUI();
 
 }

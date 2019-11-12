@@ -9,7 +9,6 @@ import {
     oceanColor,
     oceanColor2,
     displayOwnView,
-    playerNumber,
     gameColNumber,
     gameLineNumber,
     boardColor,
@@ -46,9 +45,9 @@ export class Board {
 
         //Display the boats
         if (displayOwnView) {
-            board.players[playerNumber - 1].drawShips(true);
+            board.players[0].drawShips(true);
         } else {
-            board.players[playerNumber - 1].drawShips(false);
+            board.players[1].drawShips(false);
         }
 
         //Display the grid over de boats
@@ -267,7 +266,7 @@ export class Board {
         var ship;
         var i;
 
-        board.players[playerNumber - 1].ships.forEach(function(s) {
+        board.players[0].ships.forEach(function(s) {
             i = 0;
             s.getPositions().forEach(function(p) {
                 if (pos.x == p.x && pos.y == p.y) {
@@ -280,7 +279,7 @@ export class Board {
     }
 
     addEnemyDamage(pos) {
-        board.players[playerNumber - 1].enemyShip.addDamage(pos);
+        board.players[1].enemyShip.addDamage(pos);
     }
 
     checkConfilct(type, rotation) {
@@ -324,7 +323,7 @@ export class Board {
         });
 
         if (noConflict) {
-            var posPlayer = board.players[playerNumber - 1].getShipsPos();
+            var posPlayer = board.players[0].getShipsPos();
             noConflict = board.checkPos(posPlayer, posShip);
         }
 
@@ -334,11 +333,11 @@ export class Board {
     deleteShip() {
         board.typeDel = -1;
 
-        board.players[playerNumber - 1].ships.forEach(function(ship) {
+        board.players[0].ships.forEach(function(ship) {
             ship.getPositions().forEach(function(pos) {
                 if (pos.x == board.selectedX && pos.y == board.selectedY) {
                     board.typeDel = ship.type;
-                    board.players[playerNumber - 1].removeShip(ship);
+                    board.players[0].removeShip(ship);
                 }
             });
         });
