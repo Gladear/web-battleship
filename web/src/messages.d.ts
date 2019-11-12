@@ -61,8 +61,8 @@ interface ReceivedMessages {
   "ack": null,
   "error": CustomError,
   "create": string,
-  "parameters": GameParameters,
-  "start": null,
+  "join": GameParameters,
+  "start": boolean,
   "fire": FireMessage,
   "disconnect": null,
 }
