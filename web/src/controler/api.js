@@ -1,9 +1,9 @@
-import { end as endGame, fireAt } from './play';
-import { send } from '../utils/websocket';
+import { end as endGame, fireAt } from './play.js';
+import { send } from '../utils/websocket.js';
 
 export async function ready(ships) {
   return send({
-    action: ready,
+    action: 'ready',
     payload: ships,
   });
 }

@@ -19,9 +19,9 @@ func (shipType ShipParameter) ToModel(battle model.Battle) model.ShipType {
 
 // The Parameters as received by the client
 type Parameters struct {
-	Width  int
-	Height int
-	Ships  []ShipParameter
+	Width  int             `json:"width"`
+	Height int             `json:"height"`
+	Ships  []ShipParameter `json:"ships"`
 }
 
 // ToModel converts the client parameters to parameters of the model

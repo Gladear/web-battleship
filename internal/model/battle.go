@@ -21,6 +21,11 @@ func (battle *Battle) AddPlayer(player Player) {
 	battle.boards[player] = &Board{}
 }
 
+// GetTurn returns the current player playing
+func (battle *Battle) GetTurn() Player {
+	return battle.turn;
+}
+
 // GetOtherPlayer returns the enemy of the player
 func (battle *Battle) GetOtherPlayer(player Player) Player {
 	if battle.players[0] == player {

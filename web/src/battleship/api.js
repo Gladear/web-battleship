@@ -5,18 +5,17 @@ import {
     updateUI,
     playerNumber,
 } from "./Game.js";
+import { ready } from "../controler/api.js";
 
 /********************************
 * Send
 ********************************/
 
 export function sendReady(ships){
-
     console.log("ready");
 
     //Send ready to the server with ships
-
-
+    ready(ships);
 }
 
 export function sendQuit(){
