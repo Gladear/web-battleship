@@ -50,7 +50,11 @@ func (game *Game) handlePlayerReady(player *Player) error {
 
 	if len(game.Ready) == 2 {
 		err := game.Battle.Start()
-		game.sendPlayers(msg.New(msg.Start, nil))
+
+		for _, player := range game.Players {
+			player.Send(msg.New(msg.Start, player == game.Battle.GetTurn()))
+		}
+
 		return err
 	}
 
