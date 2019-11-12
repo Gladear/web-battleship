@@ -87,7 +87,7 @@ export function initParamaters(parameters){
     boats = [];
     boatPointMax = 0;
 
-    parameters.Ships.forEach(function(boat){
+    parameters.ships.forEach(function(boat){
         var id;
         switch(boat.name){
             case "Submarine":
@@ -114,8 +114,8 @@ export function initParamaters(parameters){
     boatPoint = 0;
 
     //Set board parameters
-    gameLineNumber = parameters.Width;
-    gameColNumber = parameters.Height;
+    gameLineNumber = parameters.width;
+    gameColNumber = parameters.height;
 
     gridCaseLength = windowsLength/(gameLineNumber+1);
     gridCaseHeight = windowsHeight/(gameColNumber+1);
