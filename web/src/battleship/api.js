@@ -6,8 +6,9 @@ import {
     playerNumber,
     init,
     setPlayerNumber,
+    isPlayerTurn,
 } from "./Game.js";
-import { ready } from "../controler/api.js";
+import { ready, fire } from "../controler/api.js";
 
 /********************************
 * Send
@@ -61,7 +62,7 @@ export async function sendFire(){
 ********************************/
 
 export function onParamater(parameters){
-    
+
     initParamaters(parameters);
     init();
 }

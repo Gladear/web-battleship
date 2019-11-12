@@ -6,7 +6,6 @@ import {Player} from "./Player.js";
 import {Ship} from "./Ship.js";
 import {ShipNotGame} from "./ShipNotGame.js";
 
-import {$_GET} from "./Url.js";
 import {
     sendReady,
     sendQuit,
@@ -418,6 +417,8 @@ export function updateUI(){
     updateBoatTab();
     updateUIFire();
 }
+
+document.getElementById('button_fire').addEventListener('click', sendFire);
 
 export function updateUIFire(){
 
