@@ -22,10 +22,10 @@ var d = new Date();
 var time = d.getMilliseconds();
 var newTime;
 export var t = 0;
-var turn = 1;
+export var turn = 1;
 
 export var Sh_ips;
-var Damage;
+export var Damage;
 
 export var windowsLength = canvas.width;
 export var windowsHeight = canvas.height;
@@ -427,7 +427,7 @@ export function updateUIFire(){
     } else {
         document.getElementById("button_fire").disabled = true;
     }
-    setTimeout(updateView, 1000);
+    setTimeout(updateView, 3000);
 }
 
 export function updateView(){
@@ -475,4 +475,31 @@ export function gameReady(){
     });
 
     return ready;
+}
+
+export function setTurn(){
+    turn = turn != 1 ? 1 : 2;
+}
+
+export function addEnemyFire(pos,resp){
+    board.addPosEnemy(pos);
+    board.resetFireCase();
+    if(resp.hit){
+        board.addEnemyDamage(pos);
+        boatPoint ++;
+        updateScoreUI();
+    }
+    setTurn();
+    updateUIFire();
+}
+
+export function addOwnFire(pos){
+    
+    console.log(pos);
+    
+    board.addPosOwn(pos);
+    board.addOwnDamage(pos);
+
+    setTurn();
+    updateUIFire();
 }

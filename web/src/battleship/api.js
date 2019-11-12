@@ -7,6 +7,8 @@ import {
     init,
     setPlayerNumber,
     isPlayerTurn,
+    addEnemyFire,
+    addOwnFire,
 } from "./Game.js";
 import { ready, fire } from "../controler/api.js";
 
@@ -39,19 +41,16 @@ export async function sendFire(){
         var pos = {x:board.fireX,y:board.fireY};
 
         try {
-            var hit = await fire(pos)
+            var resp = await fire(pos)
         } catch {
             return 0;
         }
+            
+        var txt = resp.hit ? "Hit !" : "Miss !";
+        alert(txt);
 
         //Player is the one who fired
-        board.addPosEnemy(pos);
-        board.resetFireCase();
-        if(hit){
-            board.addEnemyDamage(pos);
-        }
-
-        updateUIFire();
+        addEnemyFire(pos,resp);
     }
 
 }
@@ -81,19 +80,15 @@ export function onQuit(){
 
 }
 
-export function onFire(pos,hit){
+export function onFire(resp){
     //Triggerd when recieving a fire from the server
     //Player is the one who got fired at
-    board.addPosOwn(pos);
-
-    if(hit){
-        board.addOwnDamage(pos);
-    }
-
-    updateUIFire();
+    addOwnFire(resp)
 }
 
 export function onEnd(win){
     //Triggerd when winning the game
 
+    var txt = win ? "You won !" : "You lost !";
+    alert(txt);
 }

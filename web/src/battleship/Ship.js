@@ -4,6 +4,7 @@ import {
     gridCaseLength,
     gridCaseHeight,
     Sh_ips,
+    Damage,
 } from "./Game.js"
 
 export class Ship {

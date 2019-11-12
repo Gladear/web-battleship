@@ -196,14 +196,16 @@ export class Board {
     drawFire() {
         var cStrokeColor = 'rgba(186, 127, 46, 0.74)';
         var cFillColor = 'rgba(204, 170, 58, 0.49)';
+        
+        var board = this;
 
         if (displayOwnView) {
             this.fireOwn.forEach(function(pos) {
-                this.drawBoardCase(pos.x, pos.y, cStrokeColor, cFillColor);
+                board.drawBoardCase(pos.x, pos.y, cStrokeColor, cFillColor);
             });
         } else {
             this.fireEnemy.forEach(function(pos) {
-                this.drawBoardCase(pos.x, pos.y, cStrokeColor, cFillColor);
+                board.drawBoardCase(pos.x, pos.y, cStrokeColor, cFillColor);
             });
         }
     }
@@ -331,12 +333,14 @@ export class Board {
 
     deleteShip() {
         this.typeDel = -1;
+        var board = this;
 
         this.players[0].ships.forEach(function(ship) {
+            var b = board;
             ship.getPositions().forEach(function(pos) {
-                if (pos.x == this.selectedX && pos.y == this.selectedY) {
-                    this.typeDel = ship.type;
-                    this.players[0].removeShip(ship);
+                if (pos.x == b.selectedX && pos.y == b.selectedY) {
+                    b.typeDel = ship.type;
+                    b.players[0].removeShip(ship);
                 }
             });
         });
@@ -354,9 +358,10 @@ export class Board {
 
     firePositionValid() {
         var valid = true;
+        var board = this;
 
         this.fireEnemy.forEach(function(pos) {
-            if (pos.x == this.fireX && pos.y == this.fireY) valid = false;
+            if (pos.x == board.fireX && pos.y == board.fireY) valid = false;
         });
 
         return valid;
