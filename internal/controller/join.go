@@ -27,11 +27,13 @@ func handleJoin(player Player, payload json.RawMessage) *Game {
 	for _, shipType := range game.Battle.Params.Ships {
 		found := false
 
-		for _, ship := range ships {
+		for index, ship := range ships {
 			if shipType.Name == ship.Name {
 				found = true
 
-				ship.Count++
+				ships[index].Count++
+
+				break
 			}
 		}
 
