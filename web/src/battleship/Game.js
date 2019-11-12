@@ -83,13 +83,13 @@ export function initParamaters(parameters){
     boats = [];
     boatPointMax = 0;
 
-    parameters.ships.forEach(function(boat){
+    parameters.Ships.forEach(function(boat){
         var id;
         switch(boat.name){
             case "Submarine":
                 id = 0;
                 break;
-            case "Carier":
+            case "Carrier":
                 id = 1;
                 break;
             case "Battleship":
@@ -98,7 +98,7 @@ export function initParamaters(parameters){
             case "Patrol Boat":
                 id = 3;
                 break;
-            case "Crusier":
+            case "Cruiser":
                 id = 4;
                 break;
         }
@@ -110,8 +110,8 @@ export function initParamaters(parameters){
     boatPoint = 0;
 
     //Set board parameters
-    gameLineNumber = parameters.width;
-    gameColNumber = parameters.height;
+    gameLineNumber = parameters.Width;
+    gameColNumber = parameters.Height;
 
     gridCaseLength = windowsLength/(gameLineNumber+1);
     gridCaseHeight = windowsHeight/(gameColNumber+1);
@@ -121,16 +121,7 @@ export function initParamaters(parameters){
 
 }
 
-document.body.onload = init;
-
-function init(){
-
-    //Todo remove *************************************
-    var bs = [{name:"Submarine",length:3,count:2}];
-    var parameters = {ships:bs,width:10,height:10};
-    initParamaters(parameters);
-    //*************************************************
-
+export function init(){
 
     ship_demo = new ShipNotGame();
     Sh_ips = new ShipNotGame();
@@ -289,7 +280,6 @@ export function cursorClick(){
                 updateBoatTab(valSel);
             } else {
                 var typeDel = board.deleteShip();
-                console.log(typeDel);
 
                 boats.forEach(function(boat){
                     if(boat.id == typeDel){
@@ -481,6 +471,3 @@ export function gameReady(){
 
     return ready;
 }
-
-
-document.body.onload = init;

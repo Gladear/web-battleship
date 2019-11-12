@@ -4,6 +4,7 @@ import {
     board,
     updateUI,
     playerNumber,
+    init,
 } from "./Game.js";
 import { ready } from "../controler/api.js";
 
@@ -59,7 +60,9 @@ export async function sendFire(){
 ********************************/
 
 export function onParamater(parameters){
+    
     initParamaters(parameters);
+    init();
 }
 
 export function onReady(playernb){
