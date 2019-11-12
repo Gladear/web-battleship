@@ -66,6 +66,10 @@ export var placementPhase = true;
 
 export var playerNumber;
 
+export function setPlayerNumber(pn) {
+  playerNumber = pn;
+}
+
 var windowXInit;
 var windowYInit;
 
@@ -135,7 +139,7 @@ function init(){
     ship_demo = new ShipNotGame();
     Sh_ips = new ShipNotGame();
     Damage = new DamageNotGame();
-    
+
     windowXInit = windowsOffsetLen;
     windowYInit = windowsOffsetHei;
 
