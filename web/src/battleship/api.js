@@ -10,7 +10,7 @@ import {
     addEnemyFire,
     addOwnFire,
 } from "./Game.js";
-import { ready, fire } from "../controler/api.js";
+import { ready, fire, leave } from "../controler/api.js";
 
 /********************************
 * Send
@@ -23,12 +23,14 @@ export function sendReady(ships){
     ready(ships);
 }
 
-export function sendQuit(){
+export function sendLeave(){
 
     console.log("quit");
 
     //Triggerd when quitting the game
+    leave();
 
+    location.assign("/");
 }
 
 export async function sendFire(){
@@ -45,7 +47,7 @@ export async function sendFire(){
         } catch {
             return 0;
         }
-            
+
         var txt = resp.hit ? "Hit !" : "Miss !";
         alert(txt);
 

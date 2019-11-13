@@ -8,7 +8,7 @@ import {ShipNotGame} from "./ShipNotGame.js";
 
 import {
     sendReady,
-    sendQuit,
+    sendLeave,
     sendFire,
 } from "./api.js";
 
@@ -46,6 +46,7 @@ document.getElementById("battleship_board").onmousemove = cursor;
 document.getElementById("battleship_board").onclick = cursorClick;
 
 document.getElementById("button_ready").onclick = readyClick;
+document.getElementById("button_left").onclick = sendLeave;
 
 export var oceanWaveColor = "#5489d1";
 export var oceanColor = "#2f70c7";
@@ -494,9 +495,9 @@ export function addEnemyFire(pos,resp){
 }
 
 export function addOwnFire(pos){
-    
+
     console.log(pos);
-    
+
     board.addPosOwn(pos);
     board.addOwnDamage(pos);
 
