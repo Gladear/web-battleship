@@ -19,57 +19,32 @@
       </div>
       <br />
 
-      Carrier number
-      <select id="carrier">
-        <option value="0">0</option>
-        <option value="1" selected>1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
-      <br />
+      <div>
+        <label for="carrier">Carrier number</label><br>
+        <input type="number" name="carrier" id="carrier" min="0"value="1">
+      </div>
 
-      Battleship number
-      <select id="battleship">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2" selected>2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
-      <br />
+      <div>
+        <label for="battleship">Battleship number</label><br>
+        <input type="number" name="battleship" id="battleship" min="0" value="2">
+      </div>
 
-      Cruiser number
-      <select id="cruiser">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2" selected>2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
-      <br />
+      <div>
+        <label for="cruiser">Cruiser number</label><br>
+        <input type="number" name="cruiser" id="cruiser" min="0" value="2">
+      </div>
 
-      Submarine number
-      <select id="submarine">
-        <option value="0">0</option>
-        <option value="1" selected>1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
-      <br />
+      <div>
+        <label for="submarine">Submarine number</label><br>
+        <input type="number" name="submarine" id="submarine" value="1">
+      </div>
 
-      Patrol Boat number
-      <select id="patrol">
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3" selected>3</option>
-        <option value="4">4</option>
-      </select>
-      <br />
+      <div>
+        <label for="patrol">Patrol Boat number</label><br>
+        <input type="number" name="patrol" id="patrol" min="0" value="3">
+      </div>
 
-      <button type="submit">Modifier</button>
+      <button type="submit" class="menu_button">Modifier</button>
     </form>
 
     <form id="menu" action="/play">

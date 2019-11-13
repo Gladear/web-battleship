@@ -6,18 +6,15 @@ body {
     font-family : Verdana;
 }
 
-H1 { 
-	font-size : 50px;
-	text-align: center;
-}
-
-#game_title{
-    margin-top:15%;
+h1 {
+  font-size: 50px;
+  text-align: center;
 }
 
 #rules {
-	text-align : center;
-	background:rgba(204, 204, 204, 0.61);
+    margin: auto;
+    text-align: center;
+    background:rgba(204, 204, 204, 0.61);
     width: 70%;
     left: auto;
     right: auto;
@@ -33,24 +30,19 @@ H1 {
 	cursor: pointer;
 	background: #C5C5C5;
 	background: linear-gradient(top, #C5C5C5 0%, #a0a0a0 100%);
-	background: -moz-linear-gradient(top, #C5C5C5 0%, #a0a0a0 100%);
-	background: -webkit-linear-gradient(top, #C5C5C5 0%, #a0a0a0 100%);
-	background: -o-linear-gradient(top, #C5C5C5 0%, #a0a0a0 100%);
 	border: 1px solid #C5C5C5;
 	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	-o-border-radius: 5px;
 	box-shadow:0px 0px 2px 1px rgba(0, 0, 0, 0.2), inset 1px 1px 0px 0px rgba(255, 255, 255, 0.25);
-	-moz-box-shadow:0px 0px 2px 1px rgba(0, 0, 0, 0.2), inset 1px 1px 0px 0px rgba(255, 255, 255, 0.25);
-	-webkit-box-shadow:0px 0px 2px 1px rgba(0, 0, 0, 0.2), inset 1px 1px 0px 0px rgba(255, 255, 255, 0.25);
-	-o-box-shadow:0px 0px 2px 1px rgba(0, 0, 0, 0.2), inset 1px 1px 0px 0px rgba(255, 255, 255, 0.25);
 	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.50);
 	display: block;
 	margin : auto;
-	
+
 	width : 300px;
-	height : 50px;
+  height : 50px;
+}
+
+a.menu_button {
+  line-height: 50px;
 }
 
 .menu_button:hover {
@@ -88,7 +80,7 @@ H1 {
 	text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.50);
 	display: block;
 	margin : auto;
-	
+
 	width : 300px;
 	height : 50px;
 }
@@ -184,7 +176,8 @@ H1 {
     text-align: center;
 }
 
-input[type=text], select {
+input:not([type="radio"]),
+select {
     width : 300px;
     height : 50px;
     padding: 12px 20px;
