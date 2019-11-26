@@ -23,7 +23,7 @@ func (battle *Battle) AddPlayer(player Player) {
 
 // GetTurn returns the current player playing
 func (battle *Battle) GetTurn() Player {
-	return battle.turn;
+	return battle.turn
 }
 
 // GetOtherPlayer returns the enemy of the player
@@ -52,12 +52,12 @@ func (battle *Battle) CanPlay(player Player) bool {
 }
 
 // CanFire indicates whether the player can fire a location or not
-func (battle *Battle) CanFire(location Location) bool {
-	if battle.turn == nil {
+func (battle *Battle) CanFire(player Player, location Location) bool {
+	if battle.turn != player {
 		return false
 	}
 
-	board := battle.boards[battle.turn]
+	board := battle.boards[battle.GetOtherPlayer(player)]
 	return !board.isFired(location)
 }
 
