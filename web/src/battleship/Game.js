@@ -558,6 +558,7 @@ settingsFormEl.addEventListener('submit', function(event) {
   }), {});
 
   setShipColors(colors);
+  updateBoatTab();
 
   dialogParamsEl.close();
 });
