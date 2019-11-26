@@ -4,7 +4,7 @@ import {DamageNotGame} from "./DamageNotGame.js";
 import {Grid} from "./Grid.js";
 import {Player} from "./Player.js";
 import {Ship} from "./Ship.js";
-import {ShipNotGame} from "./ShipNotGame.js";
+import {ShipNotGame, setShipColors} from "./ShipNotGame.js";
 
 import {
     sendReady,
@@ -512,10 +512,10 @@ export function addOwnFire(pos){
 }
 
 export function setTurnAction(resp){
-    
+
     var hit = false;
     var char = String.fromCharCode(resp.location.x+64);
-    
+
     if(resp.player){
         //Player is the one who fired
         hit = resp.hit;
@@ -524,11 +524,11 @@ export function setTurnAction(resp){
         hit = hitOwn;
         hitOwn = false;
     }
-    
+
     var actionMessage = hit ? "Hit" : "Miss";
-    
+
     var message = char+resp.location.y+" - "+actionMessage;
-    
+
     turnAction.message = message;
     turnAction.life = 25;
 }
@@ -536,3 +536,28 @@ export function setTurnAction(resp){
 export function hitOwnF(){
     hitOwn = true;
 }
+
+/** @type {HTMLDialogElement} */
+let dialogParamsEl = document.getElementById('dialog_params');
+
+/** @type {HTMLFormElement} */
+let settingsFormEl = document.getElementById('settings');
+
+document.getElementById('button_params').addEventListener('click', function() {
+  dialogParamsEl.showModal();
+});
+
+settingsFormEl.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const inputs = event.target.querySelectorAll('input[type=color]');
+
+  const colors = [...inputs].reduce((obj, input) => ({
+    ...obj,
+    [input.name]: input.value,
+  }), {});
+
+  setShipColors(colors);
+
+  dialogParamsEl.close();
+});
