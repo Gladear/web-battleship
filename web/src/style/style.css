@@ -50,6 +50,7 @@ h1 {
 
 a.menu_button {
   line-height: 50px;
+  text-align: center;
 }
 
 .menu_button:hover {
@@ -61,7 +62,7 @@ a.menu_button {
 
 .menu_button:active{
 	opacity:0.8;
-}
+    }
 
 .icon_button {
     width: 3rem;
@@ -221,6 +222,7 @@ a.menu_button {
   height: 25px; 
   background: #4CAF50; 
   cursor: pointer; 
+}
 
 #menu {
     text-align: center;
