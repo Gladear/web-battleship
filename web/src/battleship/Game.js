@@ -27,6 +27,8 @@ export var turn = 1;
 export var Sh_ips;
 export var Damage;
 
+var hitOwn = false;
+
 export var windowsLength = canvas.width;
 export var windowsHeight = canvas.height;
 var canvasBound = canvas.getBoundingClientRect();
@@ -53,6 +55,7 @@ export var oceanColor = "#2f70c7";
 export var oceanColor2 = "#0a1727";
 export var gridColor = "#000000";
 export var boardColor = "#dd3030";
+export var messageColor = "#e8a73f";
 var gridTxtLength = 30;
 
 export var displayOwnView = true;
@@ -69,6 +72,11 @@ export var playerNumber;
 export function setPlayerNumber(pn) {
   playerNumber = pn;
 }
+
+export var turnAction = {
+    life: 0,
+    message: ""
+};
 
 var windowXInit;
 var windowYInit;
@@ -496,11 +504,35 @@ export function addEnemyFire(pos,resp){
 
 export function addOwnFire(pos){
 
-    console.log(pos);
-
     board.addPosOwn(pos);
     board.addOwnDamage(pos);
 
     setTurn();
     updateUIFire();
+}
+
+export function setTurnAction(resp){
+    
+    var hit = false;
+    var char = String.fromCharCode(resp.location.x+64);
+    
+    if(resp.player){
+        //Player is the one who fired
+        hit = resp.hit;
+    } else {
+        //Player isn't the one who fired
+        hit = hitOwn;
+        hitOwn = false;
+    }
+    
+    var actionMessage = hit ? "Hit" : "Miss";
+    
+    var message = char+resp.location.y+" - "+actionMessage;
+    
+    turnAction.message = message;
+    turnAction.life = 25;
+}
+
+export function hitOwnF(){
+    hitOwn = true;
 }

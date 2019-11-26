@@ -9,6 +9,7 @@ import {
     isPlayerTurn,
     addEnemyFire,
     addOwnFire,
+    setTurnAction,
 } from "./Game.js";
 import { ready, fire, leave } from "../controler/api.js";
 
@@ -48,11 +49,11 @@ export async function sendFire(){
             return 0;
         }
 
-        var txt = resp.hit ? "Hit !" : "Miss !";
-        alert(txt);
-
         //Player is the one who fired
         addEnemyFire(pos,resp);
+        
+        resp.player = true;
+        setTurnAction(resp);
     }
 
 }
@@ -86,6 +87,9 @@ export function onFire(resp){
     //Triggerd when recieving a fire from the server
     //Player is the one who got fired at
     addOwnFire(resp)
+    
+    var ret = {location: resp, player: false};
+    setTurnAction(ret);
 }
 
 export function onEnd(win){
