@@ -4,7 +4,7 @@ import {DamageNotGame} from "./DamageNotGame.js";
 import {Grid} from "./Grid.js";
 import {Player} from "./Player.js";
 import {Ship} from "./Ship.js";
-import {ShipNotGame} from "./ShipNotGame.js";
+import {ShipNotGame, setShipColors} from "./ShipNotGame.js";
 
 import {
     sendReady,
@@ -26,6 +26,8 @@ export var turn = 1;
 
 export var Sh_ips;
 export var Damage;
+
+var hitOwn = false;
 
 export var windowsLength = canvas.width;
 export var windowsHeight = canvas.height;
@@ -53,6 +55,7 @@ export var oceanColor = "#2f70c7";
 export var oceanColor2 = "#0a1727";
 export var gridColor = "#000000";
 export var boardColor = "#dd3030";
+export var messageColor = "#e8a73f";
 var gridTxtLength = 30;
 
 export var displayOwnView = true;
@@ -69,6 +72,11 @@ export var playerNumber;
 export function setPlayerNumber(pn) {
   playerNumber = pn;
 }
+
+export var turnAction = {
+    life: 0,
+    message: ""
+};
 
 var windowXInit;
 var windowYInit;
@@ -496,11 +504,61 @@ export function addEnemyFire(pos,resp){
 
 export function addOwnFire(pos){
 
-    console.log(pos);
-
     board.addPosOwn(pos);
     board.addOwnDamage(pos);
 
     setTurn();
     updateUIFire();
 }
+
+export function setTurnAction(resp){
+
+    var hit = false;
+    var char = String.fromCharCode(resp.location.x+64);
+
+    if(resp.player){
+        //Player is the one who fired
+        hit = resp.hit;
+    } else {
+        //Player isn't the one who fired
+        hit = hitOwn;
+        hitOwn = false;
+    }
+
+    var actionMessage = hit ? "Hit" : "Miss";
+
+    var message = char+resp.location.y+" - "+actionMessage;
+
+    turnAction.message = message;
+    turnAction.life = 25;
+}
+
+export function hitOwnF(){
+    hitOwn = true;
+}
+
+/** @type {HTMLDialogElement} */
+let dialogParamsEl = document.getElementById('dialog_params');
+
+/** @type {HTMLFormElement} */
+let settingsFormEl = document.getElementById('settings');
+
+document.getElementById('button_params').addEventListener('click', function() {
+  dialogParamsEl.showModal();
+});
+
+settingsFormEl.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const inputs = event.target.querySelectorAll('input[type=color]');
+
+  const colors = [...inputs].reduce((obj, input) => ({
+    ...obj,
+    [input.name]: input.value,
+  }), {});
+
+  setShipColors(colors);
+  updateBoatTab();
+
+  dialogParamsEl.close();
+});

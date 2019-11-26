@@ -27,7 +27,7 @@ func (game *Game) handleFire(player Player, _payload json.RawMessage) error {
 
 	location := payload.ToModel(game.Battle)
 
-	if !game.Battle.CanFire(location) {
+	if !game.Battle.CanFire(player, location) {
 		player.Send(msg.NewError(msg.AlreadyFired))
 		return nil
 	}

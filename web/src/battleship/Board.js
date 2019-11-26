@@ -14,6 +14,9 @@ import {
     boardColor,
     advCtx,
     placementPhase,
+    messageColor,
+    turnAction,
+    hitOwnF,
 } from './Game.js';
 
 export class Board {
@@ -68,6 +71,8 @@ export class Board {
 
         //Display already fired cases
         this.drawFire();
+        
+        this.drawTurnAction();
     }
 
     clearBoard() {
@@ -273,6 +278,7 @@ export class Board {
                 if (pos.x == p.x && pos.y == p.y) {
                     ship = s;
                     ship.addDamage(i);
+                    hitOwnF();
                 }
                 i++;
             });
@@ -365,5 +371,18 @@ export class Board {
         });
 
         return valid;
+    }
+    
+    drawTurnAction(){
+        if(turnAction.life){
+            turnAction.life --;
+            advCtx.setParams(0, 0, 1, 0);
+            
+            var heiM = 150;
+            var offsetM = 2;
+            advCtx.write(turnAction.message,boardColor,75,windowsLength/2,heiM+offsetM);
+            advCtx.write(turnAction.message,boardColor,75,windowsLength/2,heiM-offsetM);
+            advCtx.write(turnAction.message,messageColor,75,windowsLength/2,heiM);
+        }
     }
 }
